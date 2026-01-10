@@ -14,35 +14,30 @@
     .spinner { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid var(--primary-green); border-radius: 50%; animation: spin 1s linear infinite; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .flag-bar { background: #fff; padding: 12px 5px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; }
-    .flag-icon { width: 30px; height: 20px; cursor: pointer; border-radius: 3px; border: 1px solid #ddd; }
-    
-    /* 1. ปรับตัวหนังสือหัวข้อให้เล็กลง */
-    .header { background-color: var(--primary-green); color: white; padding: 15px 15px 40px; text-align: center; border-radius: 0 0 30px 30px; }
-    .header h1 { margin: 0; font-size: 18px; letter-spacing: 1px; font-weight: 600; text-transform: uppercase; }
-    
-    .logo-circle { width: 70px; height: 70px; background: white; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 2px solid #fff; }
+    .flag-icon { width: 28px; height: 18px; cursor: pointer; border-radius: 2px; border: 1px solid #ddd; }
+    .header { background-color: var(--primary-green); color: white; padding: 15px 15px 35px; text-align: center; border-radius: 0 0 30px 30px; }
+    .header h1 { margin: 0; font-size: 16px; letter-spacing: 1px; font-weight: 600; text-transform: uppercase; }
+    .logo-circle { width: 65px; height: 65px; background: white; border-radius: 50%; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 2px solid #fff; }
     .logo-circle img { width: 90%; height: 90%; object-fit: contain; }
-    .container { padding: 20px; max-width: 450px; margin: 10px auto 40px; }
+    .container { padding: 15px; max-width: 450px; margin: 0 auto 40px; }
     .card { background: white; padding: 25px; border-radius: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 20px; text-align: left; }
     .input-group { margin-bottom: 18px; position: relative; }
     .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #444; font-size: 14px; }
     .input-group input, .input-group textarea { width: 100%; padding: 13px; border: 1.5px solid #eee; border-radius: 12px; box-sizing: border-box; font-size: 16px; background: #fafafa; font-family: 'Kanit'; }
     .eye-toggle { position: absolute; right: 15px; top: 38px; cursor: pointer; color: #999; font-size: 18px; }
-    
-    /* 2. ปรับปุ่มเมนูให้เป็นสีเขียวเหมือน LINE */
     .menu-btn { background: var(--primary-green); border: none; border-radius: 50px; padding: 16px; margin-bottom: 15px; cursor: pointer; display: flex; align-items: center; font-size: 18px; font-weight: 600; color: white; box-shadow: 0 4px 10px rgba(36,211,102,0.3); width: 100%; justify-content: center; }
     .menu-btn i { margin-right: 12px; font-size: 20px; }
-    .submit-btn { width: 100%; padding: 16px; background: var(--primary-green); color: white; border: none; border-radius: 50px; font-weight: bold; font-size: 18px; cursor: pointer; margin-top: 10px; }
+    .submit-btn { width: 100%; padding: 16px; background: var(--primary-green); color: white; border: none; border-radius: 50px; font-weight: bold; font-size: 18px; cursor: pointer; }
     .top-status { margin: 0 auto 20px; display: inline-block; padding: 8px 25px; border-radius: 50px; font-size: 14px; font-weight: 600; color: white; min-width: 120px; text-align: center; }
     .link-text { text-align: center; margin-top: 15px; cursor: pointer; text-decoration: underline; color: #666; font-size: 14px; display: block; }
     .house-card { background: white; border-radius: 15px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
     .house-img { width: 100%; height: 200px; object-fit: cover; }
-    .p-img-preview { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--primary-green); display: block; margin: 0 auto 10px; object-fit: cover; }
+    .p-img-preview { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--primary-green); display: block; margin: 0 auto 10px; object-fit: cover; }
   </style>
 </head>
 <body onload="initApp()">
 
-  <div id="loadingScreen"><div class="spinner"></div><p>HUAHIN.PROPERTIES Loading...</p></div>
+  <div id="loadingScreen"><div class="spinner"></div><p id="txtLoading">HUAHIN.PROPERTIES Loading...</p></div>
 
   <div class="flag-bar">
     <img src="https://flagcdn.com/w80/th.png" class="flag-icon" onclick="changeLang('th')">
@@ -76,7 +71,7 @@
       <div class="input-group"><label id="lblRPhone">เบอร์โทรศัพท์</label><input type="tel" id="rPhone"></div>
       <div class="input-group"><label id="lblRLine">Line ID</label><input type="text" id="rLine"></div>
       <div class="input-group"><label id="lblRPass">รหัสผ่าน</label><input type="password" id="rPass"><i class="fa-solid fa-eye eye-toggle" id="eyeR" onclick="togglePass('rPass', 'eyeR')"></i></div>
-      <button class="submit-btn" onclick="handleRegister()" id="btnReg">สมัครสมาชิก</button>
+      <button class="submit-btn" onclick="handleRegister()" id="btnReg">Register</button>
       <span class="link-text" onclick="switchPage('loginPage')" id="linkBack">กลับหน้าเข้าสู่ระบบ</span>
     </div>
 
@@ -97,24 +92,29 @@
       <div class="input-group"><label id="lblPPass">Password</label><input type="password" id="pPass"><i class="fa-solid fa-eye eye-toggle" id="eyeP" onclick="togglePass('pPass', 'eyeP')"></i></div>
       <div class="input-group"><label id="lblPNotes">บันทึกส่วนตัว</label><textarea id="pNotes" rows="3"></textarea></div>
       <button class="submit-btn" onclick="handleUpdateProfile()" id="btnSave">บันทึกข้อมูล</button>
-      <div onclick="switchPage('menuPage')" class="link-text">กลับเมนูหลัก</div>
+      <div onclick="switchPage('menuPage')" class="link-text" id="btnBackToMenu">กลับเมนูหลัก</div>
     </div>
 
     <div id="catalogPage" style="display:none;">
       <h3 id="hCatalogTitle">🏠 รายการทรัพย์สิน</h3>
       <div id="catalogList"></div>
-      <div onclick="switchPage('menuPage')" class="link-text">กลับเมนูหลัก</div>
+      <div onclick="switchPage('menuPage')" class="link-text" id="btnBackToMenu2">กลับเมนูหลัก</div>
     </div>
   </div>
 
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzAw1uIYBwJzUc-mu7KZ9C2uQULsUMWHbDNiSGw9tufx6TTVu5605bCpmFziwOanpFZrw/exec"; 
 
+    // คลังคำแปล 8 ภาษาชุดสมบูรณ์
     const translations = {
-      th: { subTitle: "ระบบตัวแทน", hLogin: "เข้าสู่ระบบ", btnLogin: "Login", lblLPhone: "เบอร์โทรศัพท์", lblLPass: "รหัสผ่าน", linkToReg: "สมัครสมาชิกใหม่ที่นี่", hReg: "สมัครสมาชิกใหม่", lblRName: "ชื่อ-นามสกุล", lblRPhone: "เบอร์โทรศัพท์", lblRLine: "Line ID", lblRPass: "รหัสผ่าน", btnReg: "สมัครสมาชิก", linkBack: "กลับหน้าเข้าสู่ระบบ", mEditProfile: "แก้ไขโปรไฟล์", mHouseList: "ลิสต์รายชื่อบ้าน", btnLogoutMenu: "ออกจากระบบ", btnSave: "บันทึกข้อมูล", hCatalogTitle: "🏠 รายการทรัพย์สิน" },
-      gb: { subTitle: "Agent Portal", hLogin: "Login", btnLogin: "Login", lblLPhone: "Phone", lblLPass: "Password", linkToReg: "Register Here", hReg: "New Register", lblRName: "Full Name", lblRPhone: "Phone", lblRLine: "Line ID", lblRPass: "Password", btnReg: "Register", linkBack: "Back to Login", mEditProfile: "Edit Profile", mHouseList: "Property List", btnLogoutMenu: "Logout", btnSave: "Save", hCatalogTitle: "🏠 Property List" },
-      cn: { subTitle: "代理门户", hLogin: "登录", btnLogin: "登录", lblLPhone: "电话", lblLPass: "密码", linkToReg: "在此注册", hReg: "新注册", lblRName: "姓名", lblRPhone: "电话", lblRLine: "Line ID", lblRPass: "密码", btnReg: "注册", linkBack: "回到登录", mEditProfile: "编辑资料", mHouseList: "房产列表", btnLogoutMenu: "登出", btnSave: "保存", hCatalogTitle: "🏠 房产列表" }
-      // เพิ่มภาษาอื่นๆ เช่น RU, SE, DE, KR, JP ได้ตามโครงสร้างเดิมครับ
+      th: { txtLoading: "กำลังโหลด...", subTitle: "ระบบตัวแทน", hLogin: "เข้าสู่ระบบ", btnLogin: "เข้าสู่ระบบ", lblLPhone: "เบอร์โทรศัพท์", lblLPass: "รหัสผ่าน", linkToReg: "สมัครสมาชิกใหม่ที่นี่", hReg: "สมัครสมาชิกใหม่", lblRName: "ชื่อ-นามสกุล", lblRPhone: "เบอร์โทรศัพท์", lblRLine: "Line ID", lblRPass: "รหัสผ่าน", btnReg: "สมัครสมาชิก", linkBack: "กลับหน้าเข้าสู่ระบบ", mEditProfile: "แก้ไขโปรไฟล์", mHouseList: "ลิสต์รายชื่อบ้าน", btnLogoutMenu: "ออกจากระบบ", lblPId: "รหัสสมาชิก", lblPName: "ชื่อ-นามสกุล", lblPPhone: "เบอร์โทรศัพท์", lblPLine: "LINE ID", lblPPass: "Password", lblPNotes: "บันทึกส่วนตัว", btnSave: "บันทึกข้อมูล", btnBackToMenu: "กลับเมนูหลัก", btnBackToMenu2: "กลับเมนูหลัก", hCatalogTitle: "🏠 รายการทรัพย์สิน", stPrefix: "สถานะ: ", stActive: "อนุมัติแล้ว", stPending: "รออนุมัติ", stAdmin: "แอดมิน" },
+      gb: { txtLoading: "Loading...", subTitle: "Agent Portal", hLogin: "Login", btnLogin: "Login", lblLPhone: "Phone", lblLPass: "Password", linkToReg: "Register Here", hReg: "Register", lblRName: "Full Name", lblRPhone: "Phone", lblRLine: "Line ID", lblRPass: "Password", btnReg: "Register", linkBack: "Back", mEditProfile: "Edit Profile", mHouseList: "Property List", btnLogoutMenu: "Logout", lblPId: "ID", lblPName: "Name", lblPPhone: "Phone", lblPLine: "Line ID", lblPPass: "Pass", lblPNotes: "Notes", btnSave: "Save", btnBackToMenu: "Back", btnBackToMenu2: "Back", hCatalogTitle: "🏠 Properties", stPrefix: "Status: ", stActive: "Active", stPending: "Pending", stAdmin: "Admin" },
+      cn: { txtLoading: "加载中...", subTitle: "代理门户", hLogin: "登录", btnLogin: "登录", lblLPhone: "电话", lblLPass: "密码", linkToReg: "在此注册", hReg: "注册", lblRName: "全名", lblRPhone: "电话", lblRLine: "Line ID", lblRPass: "密码", btnReg: "注册", linkBack: "返回", mEditProfile: "编辑档案", mHouseList: "房产列表", btnLogoutMenu: "登出", lblPId: "编号", lblPName: "名称", lblPPhone: "电话", lblPLine: "Line ID", lblPPass: "密码", lblPNotes: "备注", btnSave: "保存", btnBackToMenu: "返回", btnBackToMenu2: "返回", hCatalogTitle: "🏠 房产", stPrefix: "状态: ", stActive: "活跃", stPending: "待定", stAdmin: "管理员" },
+      ru: { txtLoading: "Загрузка...", subTitle: "Портал", hLogin: "Вход", btnLogin: "Вход", lblLPhone: "Телефон", lblLPass: "Пароль", linkToReg: "Регистрация", hReg: "Регистрация", lblRName: "Имя", lblRPhone: "Телефон", lblRLine: "Line ID", lblRPass: "Пароль", btnReg: "Регистрация", linkBack: "Назад", mEditProfile: "Профиль", mHouseList: "Список", btnLogoutMenu: "Выйти", lblPId: "ID", lblPName: "Имя", lblPPhone: "Телефон", lblPLine: "Line ID", lblPPass: "Пароль", lblPNotes: "Заметки", btnSave: "Сохранить", btnBackToMenu: "Назад", btnBackToMenu2: "Назад", hCatalogTitle: "🏠 Недвижимость", stPrefix: "Статус: ", stActive: "Активен", stPending: "Ожидание", stAdmin: "Админ" },
+      se: { txtLoading: "Laddar...", subTitle: "Agentportal", hLogin: "Logga in", btnLogin: "Logga in", lblLPhone: "Telefon", lblLPass: "Lösenord", linkToReg: "Registrera här", hReg: "Registrera", lblRName: "Namn", lblRPhone: "Telefon", lblRLine: "Line ID", lblRPass: "Lösenord", btnReg: "Registrera", linkBack: "Tillbaka", mEditProfile: "Redigera", mHouseList: "Huslista", btnLogoutMenu: "Logga ut", lblPId: "ID", lblPName: "Namn", lblPPhone: "Telefon", lblPLine: "Line ID", lblPPass: "Pass", lblPNotes: "Anteckningar", btnSave: "Spara", btnBackToMenu: "Tillbaka", btnBackToMenu2: "Tillbaka", hCatalogTitle: "🏠 Fastigheter", stPrefix: "Status: ", stActive: "Aktiv", stPending: "Väntar", stAdmin: "Admin" },
+      de: { txtLoading: "Laden...", subTitle: "Agentenportal", hLogin: "Login", btnLogin: "Login", lblLPhone: "Telefon", lblLPass: "Passwort", linkToReg: "Hier registrieren", hReg: "Registrieren", lblRName: "Name", lblRPhone: "Telefon", lblRLine: "Line ID", lblRPass: "Passwort", btnReg: "Registrieren", linkBack: "Zurück", mEditProfile: "Profil", mHouseList: "Hausliste", btnLogoutMenu: "Logout", lblPId: "ID", lblPName: "Name", lblPPhone: "Telefon", lblPLine: "Line ID", lblPPass: "Pass", lblPNotes: "Notizen", btnSave: "Speichern", btnBackToMenu: "Zurück", btnBackToMenu2: "Zurück", hCatalogTitle: "🏠 Immobilien", stPrefix: "Status: ", stActive: "Aktiv", stPending: "Ausstehend", stAdmin: "Admin" },
+      kr: { txtLoading: "로딩 중...", subTitle: "에이전트 포털", hLogin: "로그인", btnLogin: "로그인", lblLPhone: "전화", lblLPass: "비밀번호", linkToReg: "여기서 등록", hReg: "등록", lblRName: "이름", lblRPhone: "전화", lblRLine: "Line ID", lblRPass: "비밀번호", btnReg: "등록", linkBack: "뒤로", mEditProfile: "수정", mHouseList: "목록", btnLogoutMenu: "로그아웃", lblPId: "ID", lblPName: "이름", lblPPhone: "전화", lblPLine: "Line ID", lblPPass: "비밀번호", lblPNotes: "메모", btnSave: "저장", btnBackToMenu: "뒤로", btnBackToMenu2: "뒤로", hCatalogTitle: "🏠 매물", stPrefix: "상태: ", stActive: "승인됨", stPending: "대기중", stAdmin: "관리자" },
+      jp: { txtLoading: "読み込み中...", subTitle: "ポータル", hLogin: "ログイン", btnLogin: "ログイン", lblLPhone: "電話", lblLPass: "パスワード", linkToReg: "登録はこちら", hReg: "登録", lblRName: "氏名", lblRPhone: "電話", lblRLine: "Line ID", lblRPass: "パスワード", btnReg: "登録", linkBack: "戻る", mEditProfile: "編集", mHouseList: "リスト", btnLogoutMenu: "ログアウト", lblPId: "ID", lblPName: "氏명", lblPPhone: "電話", lblPLine: "Line ID", lblPPass: "パスワード", lblPNotes: "メモ", btnSave: "保存", btnBackToMenu: "戻る", btnBackToMenu2: "戻る", hCatalogTitle: "🏠 物件リスト", stPrefix: "ステータス: ", stActive: "承認済", stPending: "保留中", stAdmin: "管理者" }
     };
 
     let userStatus = "", curPhone = "", curLang = 'th', isAdmin = false;
@@ -144,8 +144,11 @@
     function changeLang(lang) {
       curLang = lang;
       const data = translations[lang] || translations['gb'];
-      document.getElementById('subTitle').innerText = data.subTitle;
-      Object.keys(data).forEach(id => { if(document.getElementById(id)) document.getElementById(id).innerText = data[id]; });
+      // แปลทุก ID ที่อยู่ในตาราง translations
+      Object.keys(data).forEach(id => { 
+        const el = document.getElementById(id);
+        if(el) el.innerText = data[id]; 
+      });
       if(userStatus) updateStatusDisplay(userStatus);
     }
 
@@ -169,10 +172,10 @@
 
     async function handleRegister() {
       const data = { name: document.getElementById('rName').value, phone: document.getElementById('rPhone').value, lineId: document.getElementById('rLine').value, password: document.getElementById('rPass').value };
-      if(!data.name || !data.phone || !data.password) { Swal.fire('Error', 'กรุณากรอกข้อมูลสำคัญให้ครบ', 'warning'); return; }
+      if(!data.name || !data.phone || !data.password) { Swal.fire('Error', 'Please fill data', 'warning'); return; }
       const res = await callApi({ action: "register", data: JSON.stringify(data) });
-      if(res && res.success) { Swal.fire('สำเร็จ', 'สมัครสมาชิกแล้ว กรุณารอแอดมินอนุมัติ', 'success').then(() => switchPage('loginPage')); }
-      else { Swal.fire('Error', res.message || 'เกิดข้อผิดพลาด', 'error'); }
+      if(res && res.success) { Swal.fire('Success', 'Registered! Wait for approval', 'success').then(() => switchPage('loginPage')); }
+      else { Swal.fire('Error', res.message || 'Error', 'error'); }
     }
 
     function loadUserData(profile) {
@@ -188,18 +191,19 @@
     }
 
     function updateStatusDisplay(status) {
+      const data = translations[curLang] || translations['gb'];
       const topBadge = document.getElementById('topStatusBadge'), pBadge = document.getElementById('pBadge');
-      let bgColor = 'var(--status-pending)';
-      if(status === 'แอดมิน' || status === 'Admin') bgColor = 'var(--status-admin)';
-      else if(status === 'อนุมัติแล้ว' || status === 'Active') bgColor = 'var(--status-active)';
-      topBadge.innerText = (curLang === 'th' ? "สถานะ: " : "Status: ") + status;
+      let bgColor = 'var(--status-pending)', translatedStatus = data.stPending;
+      if(status === 'แอดมิน' || status === 'Admin') { bgColor = 'var(--status-admin)'; translatedStatus = data.stAdmin; }
+      else if(status === 'อนุมัติแล้ว' || status === 'Active') { bgColor = 'var(--status-active)'; translatedStatus = data.stActive; }
+      topBadge.innerText = (data.stPrefix || "") + translatedStatus;
       topBadge.style.backgroundColor = bgColor;
-      if(pBadge) { pBadge.innerText = status; pBadge.style.backgroundColor = bgColor; }
+      if(pBadge) { pBadge.innerText = translatedStatus; pBadge.style.backgroundColor = bgColor; }
     }
 
     async function checkActive(feature) {
       if(!isAdmin && userStatus !== 'อนุมัติแล้ว' && userStatus !== 'Active') {
-        Swal.fire('รอการอนุมัติ', 'บัญชีของคุณยังไม่ได้รับการอนุมัติ', 'warning'); return;
+        Swal.fire('Warning', 'Wait for Approval', 'warning'); return;
       }
       if(feature === 'houselist') loadCatalog();
     }
@@ -219,7 +223,7 @@
     async function handleUpdateProfile() {
       const data = { phone: curPhone, lineId: document.getElementById('pLine').value, password: document.getElementById('pPass').value, notes: document.getElementById('pNotes').value };
       const res = await callApi({ action: "updateProfile", data: JSON.stringify(data) });
-      if (res && res.success) { Swal.fire('สำเร็จ', 'แก้ไขโปรไฟล์เรียบร้อยแล้ว', 'success'); }
+      if (res && res.success) { Swal.fire('Success', 'Updated!', 'success'); }
     }
 
     function handleLogout() { localStorage.clear(); location.reload(); }
