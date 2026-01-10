@@ -15,10 +15,9 @@
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .flag-bar { background: #fff; padding: 10px 5px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; }
     .flag-icon { width: 28px; height: 18px; cursor: pointer; border-radius: 2px; border: 1px solid #ddd; }
-    .header { background-color: var(--primary-green); color: white; padding: 20px 15px 40px; text-align: center; border-radius: 0 0 30px 30px; position: relative; }
-    .logo-circle { width: 65px; height: 65px; background: white; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 2px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .header { background-color: var(--primary-green); color: white; padding: 20px 15px 40px; text-align: center; border-radius: 0 0 30px 30px; }
+    .logo-circle { width: 65px; height: 65px; background: white; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 2px solid #fff; }
     .logo-circle img { width: 90%; height: 90%; object-fit: contain; }
-    .admin-profile-top { width: 45px; height: 45px; border-radius: 50%; border: 2px solid white; object-fit: cover; position: absolute; right: 20px; top: 20px; }
     .header h1 { margin: 0; font-size: 18px; letter-spacing: 1px; font-weight: 600; text-transform: uppercase; }
 
     .container { padding: 15px; max-width: 450px; margin: 0 auto 40px; }
@@ -28,30 +27,29 @@
     .input-group input, .input-group textarea { width: 100%; padding: 13px; border: 1.5px solid #eee; border-radius: 12px; box-sizing: border-box; font-size: 16px; background: #fafafa; font-family: 'Kanit'; }
     .locked { background: #e9ecef !important; color: #6c757d; cursor: not-allowed; }
     .eye-toggle { position: absolute; right: 15px; top: 38px; cursor: pointer; color: #999; font-size: 18px; }
-    .menu-btn { background: var(--primary-green); border: none; border-radius: 50px; padding: 16px; margin-bottom: 15px; cursor: pointer; display: flex; align-items: center; font-size: 18px; font-weight: 600; color: white; width: 100%; justify-content: center; gap: 10px; box-shadow: 0 4px 12px rgba(36,211,102,0.2); }
+    .menu-btn { background: var(--primary-green); border: none; border-radius: 50px; padding: 16px; margin-bottom: 15px; cursor: pointer; display: flex; align-items: center; font-size: 18px; font-weight: 600; color: white; width: 100%; justify-content: center; gap: 10px; }
     .submit-btn { width: 100%; padding: 16px; background: var(--primary-green); color: white; border: none; border-radius: 50px; font-weight: bold; font-size: 18px; cursor: pointer; }
     .top-status { margin: 0 auto 20px; display: inline-block; padding: 8px 25px; border-radius: 50px; font-size: 14px; font-weight: 600; color: white; min-width: 120px; text-align: center; }
     .link-text { text-align: center; margin-top: 15px; cursor: pointer; text-decoration: underline; color: #666; font-size: 14px; display: block; }
     
-    /* สไตล์การแสดงผลรายการบ้านแบบ Card (ภาพที่ 1, 2) */
-    .house-card { background: white; border-radius: 20px; overflow: hidden; margin-bottom: 25px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); border: 1px solid #eee; }
-    .house-img { width: 100%; height: 220px; object-fit: cover; border-bottom: 1px solid #f4f4f4; }
-    .house-content { padding: 18px; text-align: center; }
-    .house-price { color: var(--primary-green); font-size: 20px; font-weight: bold; margin-bottom: 8px; }
-    .house-title { font-size: 18px; font-weight: 600; color: #333; margin-bottom: 10px; }
-    .house-details { font-size: 14px; color: #666; line-height: 1.5; }
+    /* สไตล์สำหรับการ์ดบ้านตามรูป 1, 2 */
+    .house-card { background: white; border-radius: 20px; overflow: hidden; margin-bottom: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); text-align: center; border: 1px solid #f0f0f0; }
+    .house-img { width: 100%; height: 230px; object-fit: cover; }
+    .house-info { padding: 20px; }
+    .house-price { font-weight: bold; color: var(--primary-green); font-size: 20px; margin-bottom: 5px; display: block; }
+    .house-name { font-weight: 600; color: #333; font-size: 18px; display: block; margin-bottom: 5px; }
+    .house-desc { font-size: 14px; color: #888; line-height: 1.4; }
 
-    .p-img-box { position: relative; width: 100px; height: 100px; margin: 0 auto 15px; cursor: pointer; }
-    .p-img-preview { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--primary-green); object-fit: cover; }
-    
-    /* หน้าติดต่อเรา */
+    /* รูปแอดมินในหน้าติดต่อ */
+    .admin-photo-container { text-align: center; margin-bottom: 20px; }
+    .admin-avatar { width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--primary-green); object-fit: cover; }
     .contact-item { display: flex; align-items: center; gap: 15px; padding: 15px; background: #f9f9f9; border-radius: 15px; margin-bottom: 10px; text-decoration: none; color: inherit; }
     .contact-item i { font-size: 24px; color: var(--primary-green); }
   </style>
 </head>
 <body onload="initApp()">
 
-  <div id="loadingScreen"><div class="spinner"></div><p id="txtLoading">HUAHIN.PROPERTIES Loading...</p></div>
+  <div id="loadingScreen"><div class="spinner"></div><p id="txtLoading">HUAHิน.PROPERTIES Loading...</p></div>
 
   <div class="flag-bar">
     <img src="https://flagcdn.com/w80/th.png" class="flag-icon" onclick="changeLang('th')">
@@ -64,8 +62,7 @@
     <img src="https://flagcdn.com/w80/jp.png" class="flag-icon" onclick="changeLang('jp')">
   </div>
 
-  <div class="header">
-    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" id="adminPhotoTop" class="admin-profile-top" title="Admin">
+  <div id="mainHeader" class="header">
     <div class="logo-circle"><img src="https://img5.pic.in.th/file/secure-sv1/222892.jpg"></div>
     <h1>HUAHIN.PROPERTIES</h1>
     <p id="subTitle">Agent Portal</p>
@@ -75,13 +72,34 @@
     <div id="loginPage" class="card" style="display:none;">
       <h3 id="hLogin">เข้าสู่ระบบ</h3>
       <div class="input-group"><label id="lblLPhone">เบอร์โทรศัพท์</label><input type="tel" id="lPhone"></div>
-      <div class="input-group">
-        <label id="lblLPass">รหัสผ่าน</label>
-        <input type="password" id="lPass" autocomplete="current-password"><i class="fa-solid fa-eye eye-toggle" id="eyeL" onclick="togglePass('lPass', 'eyeL')"></i>
-      </div>
+      <div class="input-group"><label id="lblLPass">รหัสผ่าน</label><input type="password" id="lPass" autocomplete="current-password"><i class="fa-solid fa-eye eye-toggle" id="eyeL" onclick="togglePass('lPass', 'eyeL')"></i></div>
       <button class="submit-btn" onclick="handleLogin()" id="btnLogin">Login</button>
       <span class="link-text" onclick="switchPage('registerPage')" id="linkToReg">สมัครสมาชิกใหม่ที่นี่</span>
-      <span class="link-text" onclick="switchPage('contactPage')" id="linkToContactLogin">ติดต่อเรา / Contact Us</span>
+    </div>
+
+    <div id="menuPage" style="display:none; text-align: center;">
+      <div id="topStatusBadge" class="top-status">Status: ...</div>
+      <p id="welcomeMsg" style="font-weight:600; font-size:18px; margin-bottom: 20px;"></p>
+      <button class="menu-btn" onclick="switchPage('profilePage')" style="background:#666;"><i class="fa-solid fa-user-gear"></i> <span id="mEditProfile">แก้ไขโปรไฟล์</span></button>
+      <button class="menu-btn" onclick="checkActive('houselist')"><i class="fa-solid fa-house-chimney-window"></i> <span id="mHouseList">ลิสต์รายชื่อบ้าน</span></button>
+      <button class="menu-btn" onclick="switchPage('contactPage')" style="background:#007bff;"><i class="fa-solid fa-headset"></i> <span id="mContactUs">ติดต่อเรา</span></button>
+      <div onclick="handleLogout()" class="link-text" id="btnLogoutMenu">ออกจากระบบ</div>
+    </div>
+
+    <div id="contactPage" class="card" style="display:none;">
+      <div class="admin-photo-container">
+        <img src="https://img2.pic.in.th/pic/admin-avatar.png" id="adminPhoto" class="admin-avatar">
+      </div>
+      <h3 id="hContact" style="text-align:center;">ติดต่อแอดมิน</h3>
+      <a href="#" id="adminCall" class="contact-item"><i class="fa-solid fa-phone"></i> <div><small>Phone</small><br><b id="adminPhoneDisp">...</b></div></a>
+      <a href="#" id="adminLine" class="contact-item"><i class="fa-brands fa-line"></i> <div><small>Line ID</small><br><b id="adminLineDisp">...</b></div></a>
+      <div onclick="switchPage('menuPage')" class="link-text" id="btnBackFromContact">กลับ</div>
+    </div>
+
+    <div id="propertiesPage" style="display:none; padding-top: 10px;">
+      <h3 id="hPropertiesTitle">🏠 รายการทรัพย์สิน</h3>
+      <div id="propertiesList"></div>
+      <div onclick="switchPage('menuPage')" class="link-text" id="btnBackToMenu2">กลับเมนูหลัก</div>
     </div>
 
     <div id="registerPage" class="card" style="display:none;">
@@ -89,31 +107,16 @@
       <div class="input-group"><label id="lblRName">ชื่อ-นามสกุล</label><input type="text" id="rName"></div>
       <div class="input-group"><label id="lblRPhone">เบอร์โทรศัพท์</label><input type="tel" id="rPhone"></div>
       <div class="input-group"><label id="lblRLine">ไอดีไลน์</label><input type="text" id="rLine"></div>
-      <div class="input-group">
-        <label id="lblRPass">รหัสผ่าน</label>
-        <input type="password" id="rPass" autocomplete="new-password"><i class="fa-solid fa-eye eye-toggle" id="eyeR" onclick="togglePass('rPass', 'eyeR')"></i>
-      </div>
-      <div class="input-group">
-        <label id="lblRPassConfirm">ยืนยันรหัสผ่าน</label>
-        <input type="password" id="rPassConfirm" autocomplete="new-password"><i class="fa-solid fa-eye eye-toggle" id="eyeR2" onclick="togglePass('rPassConfirm', 'eyeR2')"></i>
-      </div>
+      <div class="input-group"><label id="lblRPass">รหัสผ่าน</label><input type="password" id="rPass" autocomplete="new-password"><i class="fa-solid fa-eye eye-toggle" id="eyeR" onclick="togglePass('rPass', 'eyeR')"></i></div>
+      <div class="input-group"><label id="lblRPassConfirm">ยืนยันรหัสผ่าน</label><input type="password" id="rPassConfirm" autocomplete="new-password"><i class="fa-solid fa-eye eye-toggle" id="eyeR2" onclick="togglePass('rPassConfirm', 'eyeR2')"></i></div>
       <button class="submit-btn" onclick="handleRegister()" id="btnReg">Register</button>
-      <span class="link-text" onclick="switchPage('loginPage')" id="linkBack">กลับหน้าเข้าสู่ระบบ</span>
-    </div>
-
-    <div id="menuPage" style="display:none; text-align: center;">
-      <div id="topStatusBadge" class="top-status">Status: ...</div>
-      <p id="welcomeMsg" style="font-weight:600; font-size:18px; margin-bottom: 20px;"></p>
-      <button class="menu-btn" onclick="switchPage('profilePage')" id="btnEditProfile" style="background:#666;"><i class="fa-solid fa-user-gear"></i> <span id="mEditProfile">แก้ไขโปรไฟล์</span></button>
-      <button class="menu-btn" onclick="checkActive('houselist')" id="btnHouseList"><i class="fa-solid fa-house-chimney-window"></i> <span id="mHouseList">ลิสต์รายชื่อบ้าน</span></button>
-      <button class="menu-btn" onclick="switchPage('contactPage')" id="btnContactUs" style="background:#007bff;"><i class="fa-solid fa-headset"></i> <span id="mContactUs">ติดต่อเรา</span></button>
-      <div onclick="handleLogout()" class="link-text" id="btnLogoutMenu">ออกจากระบบ</div>
+      <span class="link-text" onclick="switchPage('loginPage')" id="linkBack">กลับ</span>
     </div>
 
     <div id="profilePage" class="card" style="display:none;">
       <div class="p-img-box" onclick="document.getElementById('fileInput').click()">
         <img id="pImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="p-img-preview">
-        <div style="position: absolute; bottom:0; right:0; background:white; border-radius:50%; width:30px; height:30px; display:flex; align-items:center; justify-content:center; border:1px solid #ddd;"><i class="fa-solid fa-camera"></i></div>
+        <div class="p-img-cam" style="position: absolute; bottom:0; right:0; background:white; border-radius:50%; width:30px; height:30px; display:flex; align-items:center; justify-content:center; border:1px solid #ddd;"><i class="fa-solid fa-camera"></i></div>
         <input type="file" id="fileInput" style="display:none" onchange="previewImg(this)" accept="image/*">
       </div>
       <div id="pBadge" class="top-status" style="display: block; margin: 0 auto 15px;">Status</div>
@@ -121,27 +124,10 @@
       <div class="input-group"><label id="lblPName">ชื่อ-นามสกุล</label><input type="text" id="pName" readonly class="locked"></div>
       <div class="input-group"><label id="lblPPhone">เบอร์โทรศัพท์</label><input type="text" id="pPhone" readonly class="locked"></div>
       <div class="input-group"><label id="lblPLine">ไอดีไลน์</label><input type="text" id="pLine"></div>
-      <div class="input-group">
-        <label id="lblPPass">Password</label>
-        <input type="password" id="pPass"><i class="fa-solid fa-eye eye-toggle" id="eyeP" onclick="togglePass('pPass', 'eyeP')"></i>
-      </div>
+      <div class="input-group"><label id="lblPPass">Password</label><input type="password" id="pPass"><i class="fa-solid fa-eye eye-toggle" id="eyeP" onclick="togglePass('pPass', 'eyeP')"></i></div>
       <div class="input-group"><label id="lblPNotes">บันทึกส่วนตัว</label><textarea id="pNotes" rows="3"></textarea></div>
       <button class="submit-btn" onclick="handleUpdateProfile()" id="btnSave">บันทึกข้อมูล</button>
       <div onclick="switchPage('menuPage')" class="link-text" id="btnBackToMenu">กลับเมนูหลัก</div>
-    </div>
-
-    <div id="contactPage" class="card" style="display:none;">
-      <h3 id="hContact">ช่องทางการติดต่อแอดมิน</h3>
-      <a href="#" id="adminCall" class="contact-item"><i class="fa-solid fa-phone"></i> <div><small>Phone</small><br><b id="adminPhoneDisp">...</b></div></a>
-      <a href="#" id="adminLine" class="contact-item"><i class="fa-brands fa-line"></i> <div><small>Line ID</small><br><b id="adminLineDisp">...</b></div></a>
-      <a href="#" id="adminEmail" class="contact-item"><i class="fa-solid fa-envelope"></i> <div><small>Email</small><br><b id="adminEmailDisp">...</b></div></a>
-      <div onclick="switchPage(localStorage.getItem('agent_phone') ? 'menuPage' : 'loginPage')" class="link-text" id="btnBackFromContact">กลับ</div>
-    </div>
-
-    <div id="propertiesPage" style="display:none;">
-      <h3 id="hPropertiesTitle" style="margin-bottom: 20px;">🏠 รายการทรัพย์สิน</h3>
-      <div id="propertiesList"></div>
-      <div onclick="switchPage('menuPage')" class="link-text" id="btnBackToMenu2">กลับเมนูหลัก</div>
     </div>
   </div>
 
@@ -149,8 +135,8 @@
     const API_URL = "https://script.google.com/macros/s/AKfycbyLB6o3Nqm8QtYSkneLHDva0T8hxkLHVl5iu1EM2IrswK8uyPkGQ4VlvP77nXHIBMB7KA/exec"; 
 
     const translations = {
-      th: { txtLoading: "กำลังโหลด...", subTitle: "ระบบตัวแทน", hLogin: "เข้าสู่ระบบ", btnLogin: "Login", lblLPhone: "เบอร์โทรศัพท์", lblLPass: "รหัสผ่าน", linkToReg: "สมัครสมาชิกใหม่ที่นี่", hReg: "สมัครสมาชิกใหม่", lblRName: "ชื่อ-นามสกุล", lblRPhone: "เบอร์โทรศัพท์", lblRLine: "ไอดีไลน์", lblPLine: "ไอดีไลน์", lblRPass: "รหัสผ่าน", lblRPassConfirm: "ยืนยันรหัสผ่าน", btnReg: "สมัครสมาชิก", linkBack: "กลับเข้าสู่ระบบ", mEditProfile: "แก้ไขโปรไฟล์", mHouseList: "ลิสต์รายชื่อบ้าน", mContactUs: "ติดต่อเรา", btnLogoutMenu: "ออกจากระบบ", lblPId: "รหัสสมาชิก", lblPName: "ชื่อ-นามสกุล", lblPPhone: "เบอร์โทรศัพท์", lblPLine: "ไอดีไลน์", lblPPass: "Password", lblPNotes: "บันทึกส่วนตัว", btnSave: "บันทึกข้อมูล", btnBackToMenu: "กลับเมนูหลัก", btnBackToMenu2: "กลับเมนูหลัก", hPropertiesTitle: "🏠 รายการทรัพย์สิน", hContact: "ช่องทางการติดต่อแอดมิน", btnBackFromContact: "กลับ", stPrefix: "สถานะ: ", stActive: "อนุมัติแล้ว", stPending: "รออนุมัติ", stAdmin: "แอดมิน", txtWelcome: "ยินดีต้อนรับ: ", phName: "ชื่อ นามสกุล", phPhone: "08x-xxxxxxx", phLine: "ระบุไอดีไลน์", phPass: "รหัสผ่าน 6 หลัก", phNotes: "เขียนโน้ตของคุณที่นี่..." },
-      gb: { txtLoading: "Loading...", subTitle: "Agent Portal", hLogin: "Login", btnLogin: "Login", lblLPhone: "Phone", lblLPass: "Password", linkToReg: "Register Here", hReg: "Register", lblRName: "Full Name", lblRPhone: "Phone Number", lblRLine: "Line ID", lblPLine: "Line ID", lblRPass: "Password", lblRPassConfirm: "Confirm Pass", btnReg: "Register", linkBack: "Back", mEditProfile: "Profile", mHouseList: "House List", mContactUs: "Contact Admin", btnLogoutMenu: "Logout", lblPId: "Agent ID", lblPName: "Full Name", lblPPhone: "Phone", lblLPhone: "Phone", lblPLine: "Line ID", lblPPass: "Pass", lblPNotes: "Notes", btnSave: "Save", btnBackToMenu: "Back", btnBackToMenu2: "Back", hPropertiesTitle: "🏠 Properties", hContact: "Contact Administrator", btnBackFromContact: "Back", stPrefix: "Status: ", stActive: "Active", stPending: "Pending", stAdmin: "Admin", txtWelcome: "Welcome: ", phName: "Full Name", phPhone: "08x-xxxxxxx", phLine: "Your Line ID", phPass: "6-digit password", phNotes: "Write your notes here..." }
+      th: { txtLoading: "กำลังโหลด...", subTitle: "ระบบตัวแทน", hLogin: "เข้าสู่ระบบ", btnLogin: "Login", lblLPhone: "เบอร์โทรศัพท์", lblLPass: "รหัสผ่าน", linkToReg: "สมัครสมาชิกใหม่ที่นี่", hReg: "สมัครสมาชิกใหม่", lblRName: "ชื่อ-นามสกุล", lblRPhone: "เบอร์โทรศัพท์", lblRLine: "ไอดีไลน์", lblPLine: "ไอดีไลน์", lblRPass: "รหัสผ่าน", lblRPassConfirm: "ยืนยันรหัสผ่าน", btnReg: "สมัครสมาชิก", linkBack: "กลับ", mEditProfile: "แก้ไขโปรไฟล์", mHouseList: "ลิสต์รายชื่อบ้าน", mContactUs: "ติดต่อเรา", btnLogoutMenu: "ออกจากระบบ", lblPId: "รหัสสมาชิก", lblPName: "ชื่อ-นามสกุล", lblPPhone: "เบอร์โทรศัพท์", lblPLine: "ไอดีไลน์", lblPPass: "Password", lblPNotes: "บันทึกส่วนตัว", btnSave: "บันทึกข้อมูล", btnBackToMenu: "กลับเมนูหลัก", btnBackToMenu2: "กลับเมนูหลัก", hPropertiesTitle: "🏠 รายการทรัพย์สิน", hContact: "ติดต่อแอดมิน", btnBackFromContact: "กลับ", txtWelcome: "ยินดีต้อนรับ: ", phName: "ชื่อ นามสกุล", phPhone: "08x-xxxxxxx", phLine: "ระบุไอดีไลน์", phPass: "รหัสผ่าน 6 หลัก", phNotes: "เขียนโน้ตของคุณที่นี่..." },
+      gb: { txtLoading: "Loading...", subTitle: "Agent Portal", hLogin: "Login", btnLogin: "Login", lblLPhone: "Phone", lblLPass: "Password", linkToReg: "Register", hReg: "Register", lblRName: "Full Name", lblRPhone: "Phone", lblRLine: "Line ID", lblPLine: "Line ID", lblRPass: "Password", lblRPassConfirm: "Confirm", btnReg: "Register", linkBack: "Back", mEditProfile: "Profile", mHouseList: "House List", mContactUs: "Contact", btnLogoutMenu: "Logout", lblPId: "ID", lblPName: "Name", lblPPhone: "Phone", lblPLine: "Line ID", lblPPass: "Pass", lblPNotes: "Notes", btnSave: "Save", btnBackToMenu: "Back", btnBackToMenu2: "Back", hPropertiesTitle: "🏠 Properties", hContact: "Contact Admin", btnBackFromContact: "Back", txtWelcome: "Welcome: ", phName: "Full Name", phPhone: "08x-xxxxxxx", phLine: "Your Line ID", phPass: "6-digit pass", phNotes: "Write note here..." }
     };
 
     let userStatus = "", curPhone = "", curLang = 'th', isAdmin = false, globalProfile = null, newImgBase64 = null;
@@ -159,24 +145,29 @@
     function previewImg(input) { if (input.files && input.files[0]) { const reader = new FileReader(); reader.onload = function(e) { document.getElementById('pImg').src = e.target.result; newImgBase64 = e.target.result; }; reader.readAsDataURL(input.files[0]); } }
     async function callApi(params) { try { const query = new URLSearchParams(params).toString(); const response = await fetch(`${API_URL}?${query}`); return await response.json(); } catch (e) { return null; } }
 
+    function switchPage(pageId) { 
+      ['loginPage', 'registerPage', 'menuPage', 'profilePage', 'propertiesPage', 'contactPage'].forEach(id => document.getElementById(id).style.display = 'none'); 
+      document.getElementById(pageId).style.display = 'block'; 
+      // จัดการการแสดงผล Header: ซ่อนถ้าเป็นหน้าลิสต์บ้าน
+      document.getElementById('mainHeader').style.display = (pageId === 'propertiesPage') ? 'none' : 'block';
+    }
+
     async function initApp() {
       const settingsRes = await callApi({ action: "getSettings" });
       if(settingsRes && settingsRes.success) {
         const s = settingsRes.settings;
         document.getElementById('adminPhoneDisp').innerText = s.contact_phone;
         document.getElementById('adminLineDisp').innerText = s.contact_line_id;
-        document.getElementById('adminEmailDisp').innerText = s.contact_email;
         document.getElementById('adminCall').href = "tel:" + s.contact_phone;
         document.getElementById('adminLine').href = "https://line.me/ti/p/~" + s.contact_line_id.replace('@','');
-        if(s.admin_photo_url) document.getElementById('adminPhotoTop').src = s.admin_photo_url;
+        if(s.admin_photo_url) document.getElementById('adminPhoto').src = s.admin_photo_url;
       }
-
       const ph = localStorage.getItem('agent_phone'), ps = localStorage.getItem('agent_pass');
-      const urlParams = new URLSearchParams(window.location.search);
       if (ph && ps) { 
         const res = await callApi({ action: "login", phone: ph, password: ps });
         if (res && res.success) { 
           loadUserData(res.profile); 
+          const urlParams = new URLSearchParams(window.location.search);
           if(urlParams.get('page') === 'properties') loadProperties();
           else switchPage('menuPage');
         } else { switchPage('loginPage'); }
@@ -192,14 +183,14 @@
       const listDiv = document.getElementById('propertiesList'); listDiv.innerHTML = ''; 
       if(properties) { 
         properties.forEach(house => { 
-          // ดีไซน์การ์ดแบบภาพที่ 1, 2
+          // ปรับโครงสร้าง HTML เป็นรูปแบบการ์ดให้ถูกต้องตามรูป 1, 2
           listDiv.innerHTML += `
             <div class="house-card">
               <img src="${house[4] || 'https://placehold.co/600x400'}" class="house-img">
-              <div class="house-content">
-                <div class="house-price">฿ ${house[2]}</div>
-                <div class="house-title">${house[1]}</div>
-                <div class="house-details">${house[3]}</div>
+              <div class="house-info">
+                <span class="house-price">฿ ${house[2] || '0'}</span>
+                <span class="house-name">${house[1] || ''}</span>
+                <p class="house-desc">${house[3] || ''}</p>
               </div>
             </div>`; 
         }); 
@@ -213,7 +204,7 @@
       ['rName','rPhone','rLine','rPass','rPassConfirm','pLine','pPass','pNotes','lPhone','lPass'].forEach(id => {
         const el = document.getElementById(id); if(el) {
           if(id === 'rName') el.placeholder = data.phName;
-          else if(id === 'rPhone' || id === 'lPhone') el.placeholder = data.phPhone; // แก้ไข Placeholder เบอร์โทร
+          else if(id === 'rPhone' || id === 'lPhone') el.placeholder = data.phPhone; 
           else if(id === 'rLine' || id === 'pLine') el.placeholder = data.phLine;
           else if(id === 'pNotes') el.placeholder = data.phNotes;
           else el.placeholder = data.phPass || "******";
@@ -222,16 +213,14 @@
       if(globalProfile) document.getElementById('welcomeMsg').innerText = data.txtWelcome + globalProfile.name;
       if(userStatus) updateStatusDisplay(userStatus);
     }
-
-    // ฟังก์ชันเสริมอื่นๆ
-    function switchPage(pageId) { ['loginPage', 'registerPage', 'menuPage', 'profilePage', 'propertiesPage', 'contactPage'].forEach(id => document.getElementById(id).style.display = 'none'); document.getElementById(pageId).style.display = 'block'; }
+    
     function loadUserData(profile) { globalProfile = profile; curPhone = profile.phone; userStatus = profile.status; isAdmin = profile.isAdmin; document.getElementById('pId').value = profile.agentId; document.getElementById('pName').value = profile.name; document.getElementById('pPhone').value = profile.phone; document.getElementById('pLine').value = profile.lineId; document.getElementById('pPass').value = profile.password; document.getElementById('pNotes').value = profile.notes; document.getElementById('pImg').src = profile.imgUrl || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"; changeLang(curLang); }
-    async function handleLogin() { const ph = document.getElementById('lPhone').value, ps = document.getElementById('lPass').value; if (!ph || !ps) return; document.getElementById('loadingScreen').style.display = 'flex'; const res = await callApi({ action: "login", phone: ph, password: ps }); document.getElementById('loadingScreen').style.display = 'none'; if (res && res.success) { localStorage.setItem('agent_phone', ph); localStorage.setItem('agent_pass', ps); loadUserData(res.profile); switchPage('menuPage'); } else { Swal.fire('Error', 'เบอร์โทรศัพท์หรือรหัสผ่านไม่ถูกต้อง', 'error'); } }
     async function handleUpdateProfile() { const data = { action: "updateProfile", phone: curPhone, lineId: document.getElementById('pLine').value, password: document.getElementById('pPass').value, notes: document.getElementById('pNotes').value, image: newImgBase64 }; Swal.fire({ title: 'Updating...', didOpen: () => Swal.showLoading() }); const response = await fetch(API_URL, { method: 'POST', body: JSON.stringify(data) }); const res = await response.json(); Swal.close(); if (res && res.success) { localStorage.setItem('agent_pass', data.password); if (res.newImgUrl) globalProfile.imgUrl = res.newImgUrl; Swal.fire('Success', 'Profile Updated!', 'success'); } }
-    async function handleRegister() { const name = document.getElementById('rName').value, phone = document.getElementById('rPhone').value, line = document.getElementById('rLine').value, pass = document.getElementById('rPass').value, confirmPass = document.getElementById('rPassConfirm').value; if(!name || !phone || !pass) { Swal.fire('Error', 'Please fill data', 'warning'); return; } if(pass !== confirmPass) { Swal.fire('Error', 'Passwords not match', 'error'); return; } const res = await callApi({ action: "register", data: JSON.stringify({name, phone, lineId:line, password:pass}) }); if(res && res.success) { Swal.fire('Success', 'สมัครสำเร็จ! รอการอนุมัติ', 'success').then(() => switchPage('loginPage')); } else { Swal.fire('Error', 'เบอร์นี้ถูกใช้งานแล้ว', 'error'); } }
+    async function handleRegister() { const name = document.getElementById('rName').value, phone = document.getElementById('rPhone').value, line = document.getElementById('rLine').value, pass = document.getElementById('rPass').value, confirmPass = document.getElementById('rPassConfirm').value; if(!name || !phone || !pass) { Swal.fire('Error', 'Please fill data', 'warning'); return; } if(pass !== confirmPass) { Swal.fire('Error', 'Passwords not match', 'error'); return; } const res = await callApi({ action: "register", data: JSON.stringify({name, phone, lineId:line, password:pass}) }); if(res && res.success) { Swal.fire('Success', 'สมัครสำเร็จ!', 'success').then(() => switchPage('loginPage')); } else { Swal.fire('Error', 'เบอร์นี้ถูกใช้งานแล้ว', 'error'); } }
     async function checkActive(feature) { if(!isAdmin && userStatus !== 'อนุมัติแล้ว' && userStatus !== 'Active') { Swal.fire('Waiting', 'กรุณารอแอดมินอนุมัติ', 'warning'); return; } if(feature === 'houselist') loadProperties(); }
     function handleLogout() { localStorage.clear(); location.reload(); }
     function updateStatusDisplay(status) { const data = translations[curLang] || translations['gb']; const topBadge = document.getElementById('topStatusBadge'), pBadge = document.getElementById('pBadge'); let bgColor = 'var(--status-pending)', translatedStatus = data.stPending; if(status === 'แอดมิน' || status === 'Admin' || status === 'Active') { bgColor = 'var(--status-active)'; translatedStatus = data.stActive; } topBadge.innerText = (data.stPrefix || "") + translatedStatus; topBadge.style.backgroundColor = bgColor; if(pBadge) { pBadge.innerText = translatedStatus; pBadge.style.backgroundColor = bgColor; } }
+    async function handleLogin() { const ph = document.getElementById('lPhone').value, ps = document.getElementById('lPass').value; if (!ph || !ps) return; document.getElementById('loadingScreen').style.display = 'flex'; const res = await callApi({ action: "login", phone: ph, password: ps }); document.getElementById('loadingScreen').style.display = 'none'; if (res && res.success) { localStorage.setItem('agent_phone', ph); localStorage.setItem('agent_pass', ps); loadUserData(res.profile); switchPage('menuPage'); } else { Swal.fire('Error', 'เบอร์โทรศัพท์หรือรหัสผ่านไม่ถูกต้อง', 'error'); } }
   </script>
 </body>
 </html>
