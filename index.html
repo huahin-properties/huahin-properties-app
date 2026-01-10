@@ -1,34 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <base target="_top">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
-    :root { --primary-green: #24d366; --status-pending: #ffc107; --status-active: #28a745; --status-admin: #007bff; }
-    body { font-family: 'Kanit', sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
-    #loadingScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    :root { --primary-green: #24d366; --status-pending: #ffc107; --status-active: #28a745; --status-rejected: #dc3545; --status-admin: #007bff; }
+    body { font-family: 'Kanit', sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; text-align: center; }
+    #loadingScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.5s; }
     .spinner { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid var(--primary-green); border-radius: 50%; animation: spin 1s linear infinite; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    .flag-bar { background: #fff; padding: 10px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; border-bottom: 1px solid #eee; }
-    .flag-icon { width: 30px; height: 20px; cursor: pointer; border: 1px solid #ddd; border-radius: 3px; }
-    .header { background: var(--primary-green); color: white; padding: 30px 20px 60px; text-align: center; border-radius: 0 0 30px 30px; }
-    .logo-circle { width: 80px; height: 80px; background: white; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .logo-circle img { width: 85%; }
-    .container { padding: 20px; max-width: 450px; margin: -40px auto 40px; }
-    .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 20px; }
-    .top-status { display: inline-block; padding: 6px 20px; border-radius: 50px; color: white; font-size: 14px; font-weight: 600; margin-bottom: 15px; }
-    .input-group { margin-bottom: 15px; text-align: left; }
-    .input-group label { display: block; margin-bottom: 5px; font-size: 14px; font-weight: 600; }
-    .input-group input, .input-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-family: 'Kanit'; }
-    .submit-btn { width: 100%; padding: 15px; background: var(--primary-green); color: white; border: none; border-radius: 50px; font-size: 18px; font-weight: bold; cursor: pointer; }
-    .menu-btn { background: white; border: 1px solid #eee; border-radius: 15px; padding: 15px; margin-bottom: 10px; display: flex; align-items: center; cursor: pointer; text-align: left; }
-    .menu-btn i { font-size: 20px; margin-right: 15px; color: var(--primary-green); }
-    .house-card { background: white; border-radius: 15px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: left; }
+    .flag-bar { background: #fff; padding: 12px 5px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; }
+    .flag-icon { width: 30px; height: 20px; cursor: pointer; border-radius: 3px; border: 1px solid #ddd; transition: 0.3s; }
+    .flag-icon:hover { transform: scale(1.2); }
+    .header { background-color: var(--primary-green); color: white; padding: 20px 20px 50px; text-align: center; border-radius: 0 0 30px 30px; position: relative; }
+    .logo-circle { width: 85px; height: 85px; background: white; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .logo-circle img { width: 90%; height: 90%; object-fit: contain; }
+    .container { padding: 20px; max-width: 450px; margin: 20px auto 40px; }
+    .card { background: white; padding: 25px; border-radius: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 20px; text-align: left;}
+    .menu-btn { background: white; border: 1px solid #eee; border-radius: 20px; padding: 20px; margin-bottom: 15px; cursor: pointer; display: flex; align-items: center; font-size: 18px; font-weight: 600; color: #333; }
+    .menu-btn i { width: 45px; height: 45px; background: #f0fdf4; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; color: var(--primary-green); font-size: 20px; }
+    .top-status { margin: 0 auto 20px; display: inline-block; padding: 8px 25px; border-radius: 50px; font-size: 14px; font-weight: 600; color: white; min-width: 120px; text-align: center; }
+    .input-group { margin-bottom: 18px; }
+    .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #444; font-size: 14px; }
+    .input-group input, .input-group textarea { width: 100%; padding: 13px; border: 1.5px solid #eee; border-radius: 12px; box-sizing: border-box; font-size: 16px; background: #fafafa; font-family: 'Kanit'; }
+    .submit-btn { width: 100%; padding: 16px; background: var(--primary-green); color: white; border: none; border-radius: 50px; font-weight: bold; font-size: 18px; cursor: pointer; margin-top: 10px; box-shadow: 0 6px 15px rgba(36,211,102,0.3); }
+    .house-card { background: white; border-radius: 15px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
     .house-img { width: 100%; height: 200px; object-fit: cover; }
     .house-info { padding: 15px; }
+    .house-price { color: var(--primary-green); font-size: 22px; font-weight: bold; }
+    .p-img-preview { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--primary-green); display: block; margin: 0 auto 10px; object-fit: cover; }
   </style>
 </head>
 <body onload="initApp()">
@@ -68,9 +72,11 @@
     </div>
 
     <div id="profilePage" class="card" style="display:none;">
-      <img id="pImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" style="width:100px; height:100px; border-radius:50%; margin-bottom:15px; border:3px solid var(--primary-green); object-fit:cover;">
+      <img id="pImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="p-img-preview">
+      <div id="pBadge" class="top-status" style="display: block; margin: 0 auto 15px;">Status</div>
       <div class="input-group"><label id="lblPId">รหัสสมาชิก</label><input type="text" id="pId" readonly style="background:#eee;"></div>
       <div class="input-group"><label id="lblPName">ชื่อ-นามสกุล</label><input type="text" id="pName" readonly style="background:#eee;"></div>
+      <div class="input-group"><label id="lblPPhone">เบอร์โทรศัพท์</label><input type="text" id="pPhone" readonly style="background:#eee;"></div>
       <div class="input-group"><label id="lblPLine">LINE ID</label><input type="text" id="pLine"></div>
       <div class="input-group"><label id="lblPPass">Password</label><input type="password" id="pPass"></div>
       <div class="input-group"><label id="lblPNotes">บันทึกส่วนตัว</label><textarea id="pNotes" rows="3"></textarea></div>
@@ -86,13 +92,18 @@
   </div>
 
   <script>
-    // ⚠️ อย่าลืมใส่ลิงก์ API ล่าสุดของคุณที่นี่ครับ
-    const API_URL = "https://script.google.com/macros/s/AKfycbxprgFzZJVwq7XFcKE4CDRGI5VpkZrkXr22tH9iiOozGb3dj3F99sEIoOBSWQSZE6AY/exec"; 
+    // ⚠️ ลิงก์ API ล่าสุดของคุณเจษฎ์
+    const API_URL = "https://script.google.com/macros/s/AKfycbxprgFzZJVwq7XFcKE4CDRGI5VpkZrkXr22tH9iiOozGb3dj3F99sEloOBSWQSZE6AY/exec"; 
 
     const translations = {
-      th: { subTitle: "ระบบตัวแทน", hLogin: "เข้าสู่ระบบ", btnLogin: "Login", mEditProfile: "แก้ไขโปรไฟล์", mHouseList: "ลิสต์รายชื่อบ้าน", btnLogoutMenu: "ออกจากระบบ", lblPId: "รหัสสมาชิก", lblPName: "ชื่อ-นามสกุล", lblPLine: "LINE ID", lblPPass: "Password", lblPNotes: "บันทึกส่วนตัว", btnSave: "บันทึกข้อมูล", stPrefix: "สถานะ: ", stActive: "อนุมัติแล้ว", stPending: "รออนุมัติ", stAdmin: "แอดมิน", hCatalogTitle: "🏠 รายการทรัพย์สิน" },
-      gb: { subTitle: "Agent Portal", hLogin: "Login", btnLogin: "Login", mEditProfile: "Edit Profile", mHouseList: "Property List", btnLogoutMenu: "Logout", lblPId: "Agent ID", lblPName: "Full Name", lblPLine: "LINE ID", lblPPass: "Password", lblPNotes: "Notes", btnSave: "Save", stPrefix: "Status: ", stActive: "Active", stPending: "Pending", stAdmin: "Admin", hCatalogTitle: "🏠 Property List" }
-      // เพิ่มภาษาอื่นๆ ได้ที่นี่
+      th: { subTitle: "ระบบตัวแทน", hLogin: "เข้าสู่ระบบ", btnLogin: "Login", mEditProfile: "แก้ไขโปรไฟล์", mHouseList: "ลิสต์รายชื่อบ้าน", btnLogoutMenu: "ออกจากระบบ", lblPId: "รหัสสมาชิก", lblPName: "ชื่อ-นามสกุล", lblPPhone: "เบอร์โทรศัพท์", lblPLine: "LINE ID", lblPPass: "Password", lblPNotes: "บันทึกส่วนตัว", btnSave: "บันทึกข้อมูล", stPrefix: "สถานะ: ", stActive: "อนุมัติแล้ว", stPending: "รออนุมัติ", stAdmin: "แอดมิน", hCatalogTitle: "🏠 รายการทรัพย์สิน" },
+      gb: { subTitle: "Agent Portal", hLogin: "Login", btnLogin: "Login", mEditProfile: "Edit Profile", mHouseList: "Property List", btnLogoutMenu: "Logout", lblPId: "Agent ID", lblPName: "Full Name", lblPPhone: "Phone", lblPLine: "LINE ID", lblPPass: "Password", lblPNotes: "Notes", btnSave: "Save", stPrefix: "Status: ", stActive: "Active", stPending: "Pending", stAdmin: "Admin", hCatalogTitle: "🏠 Property List" },
+      cn: { subTitle: "代理门户", hLogin: "登录", btnLogin: "登录", mEditProfile: "修改资料", mHouseList: "房产列表", btnLogoutMenu: "登出", lblPId: "代理编号", lblPName: "姓名", lblPPhone: "手机号码", lblPLine: "LINE ID", lblPPass: "密码", lblPNotes: "备注", btnSave: "保存资料", stPrefix: "状态: ", stActive: "已批准", stPending: "待批准", stAdmin: "管理员", hCatalogTitle: "🏠 房产列表" },
+      ru: { subTitle: "Портал агента", hLogin: "Вход", btnLogin: "Войти", mEditProfile: "Профиль", mHouseList: "Список домов", btnLogoutMenu: "Выйти", lblPId: "ID агента", lblPName: "Имя", lblPPhone: "Телефон", lblPLine: "LINE ID", lblPPass: "Пароль", lblPNotes: "Заметки", btnSave: "Сохранить", stPrefix: "Статус: ", stActive: "Одобрено", stPending: "В ожидании", stAdmin: "Админ", hCatalogTitle: "🏠 Список домов" },
+      se: { subTitle: "Agentportal", hLogin: "Logga in", btnLogin: "Logga in", mEditProfile: "Ändra profil", mHouseList: "Huslista", btnLogoutMenu: "Logga ut", lblPId: "Agent ID", lblPName: "Namn", lblPPhone: "Telefon", lblPLine: "LINE ID", lblPPass: "Lösenord", lblPNotes: "Anteckningar", btnSave: "Spara", stPrefix: "Status: ", stActive: "Godkänd", stPending: "Väntar", stAdmin: "Admin", hCatalogTitle: "🏠 Huslista" },
+      de: { subTitle: "Agentenportal", hLogin: "Login", btnLogin: "Login", mEditProfile: "Profil ändern", mHouseList: "Hausliste", btnLogoutMenu: "Abmelden", lblPId: "Agenten-ID", lblPName: "Name", lblPPhone: "Telefon", lblPLine: "LINE ID", lblPPass: "Passwort", lblPNotes: "Notizen", btnSave: "Speichern", stPrefix: "Status: ", stActive: "Genehmigt", stPending: "Ausstehend", stAdmin: "Admin", hCatalogTitle: "🏠 Hausliste" },
+      kr: { subTitle: "에이전트 포털", hLogin: "로그인", btnLogin: "로그인", mEditProfile: "프로파일 수정", mHouseList: "매물 목록", btnLogoutMenu: "로그아웃", lblPId: "에이전트 ID", lblPName: "이름", lblPPhone: "전화번호", lblPLine: "LINE ID", lblPPass: "비밀번호", lblPNotes: "메모", btnSave: "저장", stPrefix: "상태: ", stActive: "승인됨", stPending: "대기 중", stAdmin: "관리자", hCatalogTitle: "🏠 매물 목록" },
+      jp: { subTitle: "代理店ポータル", hLogin: "ログイン", btnLogin: "ログイン", mEditProfile: "プロフィール編集", mHouseList: "物件リスト", btnLogoutMenu: "ログアウト", lblPId: "会員ID", lblPName: "氏名", lblPPhone: "電話번호", lblPLine: "LINE ID", lblPPass: "パスワード", lblPNotes: "メモ", btnSave: "保存", stPrefix: "ステータス: ", stActive: "承認済み", stPending: "保留中", stAdmin: "管理者", hCatalogTitle: "🏠 物件リスト" }
     };
 
     let userStatus = "", curPhone = "", curLang = 'th', isAdmin = false;
@@ -101,18 +112,28 @@
       try {
         const query = new URLSearchParams(params).toString();
         const response = await fetch(`${API_URL}?${query}`);
+        if (!response.ok) throw new Error('Network error');
         return await response.json();
-      } catch (e) { return null; }
+      } catch (e) {
+        console.error("API Error:", e);
+        return null;
+      }
     }
 
     async function initApp() {
-      const ph = localStorage.getItem('agent_phone'), ps = localStorage.getItem('agent_pass');
-      if (ph && ps) {
-        const res = await callApi({ action: "login", phone: ph, password: ps });
-        if (res && res.success) { loadUserData(res.profile); switchPage('menuPage'); } 
-        else { switchPage('loginPage'); }
-      } else { switchPage('loginPage'); }
-      document.getElementById('loadingScreen').style.display = 'none';
+      try {
+        const ph = localStorage.getItem('agent_phone'), ps = localStorage.getItem('agent_pass');
+        if (ph && ps) {
+          const res = await callApi({ action: "login", phone: ph, password: ps });
+          if (res && res.success) { loadUserData(res.profile); switchPage('menuPage'); } 
+          else { switchPage('loginPage'); }
+        } else { switchPage('loginPage'); }
+      } catch (e) {
+        switchPage('loginPage');
+      } finally {
+        document.getElementById('loadingScreen').style.opacity = '0';
+        setTimeout(() => { document.getElementById('loadingScreen').style.display = 'none'; }, 500);
+      }
     }
 
     function changeLang(lang) {
@@ -132,6 +153,7 @@
       curPhone = profile.phone; userStatus = profile.status; isAdmin = profile.isAdmin;
       document.getElementById('pId').value = profile.agentId; 
       document.getElementById('pName').value = profile.name;
+      document.getElementById('pPhone').value = profile.phone; 
       document.getElementById('pLine').value = profile.lineId;
       document.getElementById('pPass').value = profile.password; 
       document.getElementById('pNotes').value = profile.notes;
@@ -141,20 +163,27 @@
 
     function updateStatusDisplay(status) {
       const data = translations[curLang] || translations['gb'];
-      const badge = document.getElementById('topStatusBadge');
-      let translated = status, color = 'var(--status-pending)';
-      if(status === 'แอดมิน' || status === 'Admin') { translated = data.stAdmin; color = 'var(--status-admin)'; }
-      else if(status === 'อนุมัติแล้ว' || status === 'Active') { translated = data.stActive; color = 'var(--status-active)'; }
-      badge.innerText = (data.stPrefix || "Status: ") + translated; 
-      badge.style.backgroundColor = color;
+      const topBadge = document.getElementById('topStatusBadge'), pBadge = document.getElementById('pBadge');
+      let translatedStatus = status, bgColor = 'var(--status-pending)';
+      
+      if(status === 'แอดมิน' || status === 'Admin') { translatedStatus = data.stAdmin; bgColor = 'var(--status-admin)'; }
+      else if(status === 'อนุมัติแล้ว' || status === 'Active') { translatedStatus = data.stActive; bgColor = 'var(--status-active)'; }
+      else if(status === 'รออนุมัติ' || status === 'Pending') { translatedStatus = data.stPending; bgColor = 'var(--status-pending)'; }
+      
+      topBadge.innerText = (data.stPrefix || "Status: ") + translatedStatus; 
+      topBadge.style.backgroundColor = bgColor;
+      if(pBadge) { pBadge.innerText = translatedStatus; pBadge.style.backgroundColor = bgColor; }
     }
 
     async function handleLogin() {
       const ph = document.getElementById('lPhone').value, ps = document.getElementById('lPass').value;
       if (!ph || !ps) return;
       document.getElementById('loadingScreen').style.display = 'flex';
+      document.getElementById('loadingScreen').style.opacity = '1';
       const res = await callApi({ action: "login", phone: ph, password: ps });
-      document.getElementById('loadingScreen').style.display = 'none';
+      document.getElementById('loadingScreen').style.opacity = '0';
+      setTimeout(() => { document.getElementById('loadingScreen').style.display = 'none'; }, 500);
+      
       if (res && res.success) { 
         localStorage.setItem('agent_phone', ph); 
         localStorage.setItem('agent_pass', ps); 
@@ -167,7 +196,7 @@
 
     async function checkActive(feature) {
       if(!isAdmin && userStatus !== 'อนุมัติแล้ว' && userStatus !== 'Active') {
-        Swal.fire('รอการอนุมัติ', 'คุณยังไม่ได้รับอนุญาตให้เข้าดูข้อมูล', 'warning'); return;
+        Swal.fire('รอการอนุมัติ', 'บัญชีของคุณยังไม่ได้รับการอนุมัติให้เข้าถึงข้อมูล', 'warning'); return;
       }
       if(feature === 'houselist') loadCatalog();
     }
@@ -177,17 +206,29 @@
       const properties = await callApi({ action: "getProperties", lang: curLang });
       const listDiv = document.getElementById('catalogList'); listDiv.innerHTML = '';
       if(properties) {
-        properties.forEach(h => {
-          listDiv.innerHTML += `<div class="house-card"><img src="${h[4] || 'https://placehold.co/600x400'}" class="house-img"><div class="house-info"><div style="color:var(--primary-green); font-size:20px; font-weight:bold;">฿ ${h[2]}</div><div style="font-weight:600;">${h[1]}</div><div style="font-size:14px; color:#666; margin-top:5px;">${h[3]}</div></div></div>`;
+        properties.forEach(house => {
+          listDiv.innerHTML += `
+            <div class="house-card">
+              <img src="${house[4] || 'https://placehold.co/600x400'}" class="house-img">
+              <div class="house-info">
+                <div class="house-price">฿ ${house[2]}</div>
+                <div style="font-weight:600; font-size:18px;">${house[1]}</div>
+                <div style="font-size:14px; color:#666; margin-top:10px;">${house[3]}</div>
+              </div>
+            </div>`;
         });
       }
-      switchPage('catalogPage'); Swal.close();
+      switchPage('catalogPage');
+      Swal.close();
     }
 
     async function handleUpdateProfile() {
       const data = { phone: curPhone, lineId: document.getElementById('pLine').value, password: document.getElementById('pPass').value, notes: document.getElementById('pNotes').value };
       const res = await callApi({ action: "updateProfile", data: JSON.stringify(data) });
-      if (res && res.success) { localStorage.setItem('agent_pass', data.password); Swal.fire('สำเร็จ', 'แก้ไขข้อมูลเรียบร้อยแล้ว', 'success'); }
+      if (res && res.success) { 
+        localStorage.setItem('agent_pass', data.password);
+        Swal.fire('สำเร็จ', 'แก้ไขโปรไฟล์เรียบร้อยแล้ว', 'success'); 
+      }
     }
 
     function handleLogout() { localStorage.clear(); location.reload(); }
