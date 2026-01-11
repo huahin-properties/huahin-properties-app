@@ -7,12 +7,7 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     :root { 
-      --primary-green: #24d366; 
-      /* สีสถานะ For Sale/Rent/Both */
-      --bg-sale: #e8f5e9; --txt-sale: #2e7d32;
-      --bg-rent: #ffebee; --txt-rent: #c62828;
-      --bg-both: #e3f2fd; --txt-both: #1565c0;
-      /* สีสถานะพรอพเพอร์ตี้ตามชีต */
+      --primary-green: #24d366; --app-price-green: #2e7d32;
       --bg-Available: #e8f5e9; --txt-Available: #2e7d32;
       --bg-Reserved: #fff3e0; --txt-Reserved: #e65100;
       --bg-Sold: #ffebee; --txt-Sold: #c62828;
@@ -25,24 +20,15 @@
     .container { padding: 6px; max-width: 450px; margin: 0 auto 70px; }
     .card { background: white; padding: 12px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 8px; }
     
-    /* สไตล์รายการ Compact */
+    /* สไตล์รายการแบบ Compact "โกงพื้นที่" (6 รายการ) */
     .compact-item { display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; background: #fff; border-bottom: 1px solid #f0f0f0; }
     .compact-thumb { width: 45px; height: 45px; border-radius: 6px; object-fit: cover; margin-right: 10px; border: 1px solid #eee; }
     .compact-info b { font-size: 12px; color: #333; display: block; font-weight: 400; line-height: 1.1; }
     .compact-info small { font-size: 10px; color: #888; font-weight: 300; display: block; line-height: 1.2; }
     .compact-right { text-align: right; }
-    
-    /* ราคาเปลี่ยนเป็นสีดำปกติ */
-    .price-black { color: #333; font-weight: 400; font-size: 12px; }
-
-    /* ป้ายประเภทการขายแยกสี */
-    .for-pill { font-size: 8px; padding: 0px 5px; border-radius: 4px; font-weight: 300; text-transform: lowercase; }
-    .pill-sale { background: var(--bg-sale); color: var(--txt-sale); }
-    .pill-rent { background: var(--bg-rent); color: var(--txt-rent); }
-    .pill-both { background: var(--bg-both); color: var(--txt-both); }
-
-    /* ป้ายสถานะพรอพเพอร์ตี้ */
+    .price-green { color: var(--app-price-green); font-weight: 400; font-size: 12px; }
     .status-pill { font-size: 7px; padding: 1px 5px; border-radius: 50px; font-weight: 400; display: inline-block; margin-top: 1px; }
+
     .pill-available { background: var(--bg-Available); color: var(--txt-Available); }
     .pill-reserved { background: var(--bg-Reserved); color: var(--txt-Reserved); }
     .pill-sold { background: var(--bg-Sold); color: var(--txt-Sold); }
@@ -53,6 +39,14 @@
     .nav-item { flex: 1; padding: 6px 0; text-align: center; font-size: 9px; color: #999; cursor: pointer; }
     .nav-item.active { color: var(--primary-green); font-weight: 400; }
     .nav-item i { font-size: 16px; margin-bottom: 1px; display: block; }
+
+    .input-group { margin-bottom: 8px; text-align: left; }
+    .input-group label { display: block; margin-bottom: 2px; font-weight: 400; font-size: 11px; }
+    .input-group input, .input-group textarea, .input-group select { width: 100%; padding: 8px; border: 1.2px solid #eee; border-radius: 8px; box-sizing: border-box; font-family: 'Kanit'; font-size: 14px; background: #fafafa; outline: none; font-weight: 300; }
+    .menu-btn { width: 100%; padding: 10px; background: var(--primary-green); color: white; border: none; border-radius: 50px; font-weight: 400; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 6px; font-size: 14px; }
+    .prop-picker-btn { width: 100%; padding: 10px; border: 1.2px solid #eee; border-radius: 8px; background: #fff; display: flex; align-items: center; justify-content: space-between; cursor: pointer; box-sizing: border-box; }
+    .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+    .modal-content { background: #fff; margin: 15% auto; padding: 12px; width: 85%; border-radius: 15px; max-height: 60vh; overflow-y: auto; }
   </style>
 </head>
 <body onload="initApp()">
@@ -61,13 +55,28 @@
 
   <div class="container">
     <div id="propertiesPage" style="display:none; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-      <div style="padding: 8px 12px; border-bottom: 1.5px solid #f4f4f4;"><b style="font-size: 12px; font-weight:400;">🏠 สต็อกพรอพเพอร์ตี้</b></div>
+      <div style="padding: 10px; border-bottom: 1.5px solid #f4f4f4;"><b style="font-size: 13px; font-weight:400;">🏠 รายการพรอพเพอร์ตี้ (Stock)</b></div>
       <div id="propertiesList"></div>
     </div>
 
-    <div id="loginPage" class="card" style="display:none; text-align:center;"><img src="https://img5.pic.in.th/file/secure-sv1/222892.jpg" style="width:60px; height:60px; border-radius:50%; margin-bottom:10px; border:2px solid var(--primary-green);"><h3 style="margin:0 0 8px; font-size: 16px; font-weight:400;">Agent Login</h3><div class="input-group"><label>เบอร์โทรศัพท์</label><input type="tel" id="lPhone" placeholder="08x-xxxxxxx"></div><div class="input-group"><label>รหัสผ่าน</label><input type="password" id="lPass" placeholder="******"></div><button class="menu-btn" onclick="handleLogin()">Login</button></div>
+    <div id="visitPage" style="display:none;">
+      <div class="card" style="padding: 6px; margin-bottom: 8px;"><div style="display:flex; align-items:center; gap:8px;"><img id="vAgentImg" src="" style="width:38px; height:38px; border-radius:50%; border:1.5px solid var(--primary-green);"><div style="text-align:left"><div style="font-weight:400; font-size:11px;"><span id="vDispName"></span> <small id="vDispRole" style="color:#888;"></small></div><div style="font-size:9px; color:#666;">ID: <span id="vDispId"></span> <span id="vStatusPill" class="status-pill"></span></div></div></div></div>
+      <div id="checkinForm" class="card">
+        <h3 style="margin-top:0; font-size: 14px; font-weight:400;"><i class="fa-solid fa-file-signature"></i> บันทึกพาชมบ้าน</h3>
+        <div class="input-group"><label>Property ID</label><div class="prop-picker-btn" onclick="openPropPicker('vProp')"><span id="vPropText" style="font-size:13px;">-- เลือกรายการ --</span><i class="fa-solid fa-chevron-down"></i></div><input type="hidden" id="vPropId"></div>
+        <div class="input-group"><label>ยูนิต / หลังอื่นๆ</label><input type="text" id="vSubPropId" placeholder="เช่น HH0001,M14..."></div>
+        <div class="input-group"><label>ชื่อลูกค้า</label><input type="text" id="vClientName"></div>
+        <div class="input-group"><label>แนบรูปถ่าย (2 รูป)</label><div style="display:flex; gap:8px; justify-content:center;"><img id="vImg1" src="https://placehold.co/60?text=1" style="width:60px; height:60px; border-radius:8px; border:1.5px dashed #ccc; object-fit:cover;" onclick="document.getElementById('file1').click()"><img id="vImg2" src="https://placehold.co/60?text=2" style="width:60px; height:60px; border-radius:8px; border:1.5px dashed #ccc; object-fit:cover;" onclick="document.getElementById('file2').click()"><input type="file" id="file1" style="display:none" onchange="previewImg(this, 'vImg1')"><input type="file" id="file2" style="display:none" onchange="previewImg(this, 'vImg2')"></div></div>
+        <div class="input-group"><label>บันทึก/หมายเหตุ (Note)</label><textarea id="vNotes" rows="1" style="min-height:40px;"></textarea></div>
+        <button class="menu-btn" onclick="getLocation()" style="background:#4285F4; padding: 10px; margin-top:2px;"><i class="fa-solid fa-location-dot"></i> เช็คอิน GPS</button>
+        <button class="menu-btn" onclick="handleRecordVisit()">ยืนยันข้อมูล</button>
+        <button class="menu-btn" onclick="switchPage('historyPage')" style="background:#666; font-size: 12px; padding: 6px;">ดูประวัติงาน</button>
+      </div>
+    </div>
+
+    <div id="loginPage" class="card" style="display:none; text-align:center;"><img src="https://img5.pic.in.th/file/secure-sv1/222892.jpg" style="width:60px; height:60px; border-radius:50%; margin-bottom:10px; border:2px solid var(--primary-green);"><h3 style="margin:0 0 8px; font-size: 15px; font-weight:400;">Agent Login</h3><div class="input-group"><label>เบอร์โทรศัพท์</label><input type="tel" id="lPhone" placeholder="08x-xxxxxxx"></div><div class="input-group"><label>รหัสผ่าน</label><input type="password" id="lPass" placeholder="******"></div><button class="menu-btn" onclick="handleLogin()">Login</button></div>
     
-    <div id="visitPage" style="display:none;"><div class="card" style="padding: 6px; margin-bottom: 8px;"><div style="display:flex; align-items:center; gap:8px;"><img id="vAgentImg" src="" style="width:38px; height:38px; border-radius:50%; border:1.5px solid var(--primary-green);"><div style="text-align:left"><div style="font-weight:400; font-size:11px;"><span id="vDispName"></span> <small id="vDispRole" style="color:#888;"></small></div><div style="font-size:9px; color:#666;">ID: <span id="vDispId"></span> <span id="vStatusPill" class="status-pill"></span></div></div></div></div><div id="checkinForm" class="card"><h3 style="margin-top:0; font-size: 14px; font-weight:400;"><i class="fa-solid fa-file-signature"></i> บันทึกพาชม</h3><div class="input-group"><label>Property ID</label><div class="prop-picker-btn" onclick="openPropPicker('vProp')"><span id="vPropText" style="font-size:13px;">-- เลือกรายการ --</span><i class="fa-solid fa-chevron-down"></i></div><input type="hidden" id="vPropId"></div><div class="input-group"><label>ยูนิต / อื่นๆ</label><input type="text" id="vSubPropId" placeholder="เช่น M14, C2"></div><div class="input-group"><label>ชื่อลูกค้า</label><input type="text" id="vClientName"></div><div class="input-group"><label>แนบรูปถ่าย</label><div style="display:flex; gap:8px; justify-content:center;"><img id="vImg1" src="https://placehold.co/60?text=1" style="width:60px;height:60px;border-radius:6px;object-fit:cover;" onclick="document.getElementById('file1').click()"><input type="file" id="file1" style="display:none" onchange="previewImg(this, 'vImg1')"></div></div><div class="input-group"><label>หมายเหตุ</label><textarea id="vNotes" rows="1"></textarea></div><button class="menu-btn" onclick="handleRecordVisit()">ยืนยันข้อมูล</button></div></div>
+    <div id="historyPage" style="display:none; background: #fff; border-radius: 12px; overflow: hidden;"><div style="padding: 8px 12px; border-bottom: 1px solid #f4f4f4; display: flex; justify-content: space-between;"><b>ประวัติ</b><i class="fa-solid fa-rotate" onclick="loadHistory()" style="color:#999; font-size:12px;"></i></div><div id="historyList"></div><div style="padding: 8px;"><button class="menu-btn" onclick="switchPage('visitPage')">กลับ</button></div></div>
   </div>
 
   <div id="bottomNav" class="bottom-nav" style="display:none;"><div class="nav-item" id="btnStock" onclick="openProperties()"><i class="fa-solid fa-house"></i><div>สต็อก</div></div><div class="nav-item" id="btnAppoint" onclick="switchPage('appointPage')"><i class="fa-solid fa-calendar-check"></i><div>นัดหมาย</div></div><div class="nav-item active" id="btnCheckin" onclick="showVisitPage()"><i class="fa-solid fa-file-signature"></i><div>เช็คอิน</div></div><div class="nav-item" id="btnLogout" onclick="handleLogout()"><i class="fa-solid fa-sign-out-alt"></i><div>ออก</div></div></div>
@@ -85,7 +94,6 @@
       } else switchPage('loginPage');
     }
 
-    // ฟังก์ชันแสดงหน้าสต็อก ปรับปรุงตามโจทย์
     async function openProperties() {
       switchPage('propertiesPage');
       const list = document.getElementById('propertiesList');
@@ -98,7 +106,6 @@
         let rawPrice = h.price ? h.price.toString().replace(/[^0-9.]/g, '') : '0';
         let displayPrice = rawPrice ? Number(rawPrice).toLocaleString() : '0';
         let statusKey = h.status.toLowerCase().replace(/\s+/g, '_');
-        let forClass = `pill-${h.forStatus.toLowerCase()}`; // sale / rent / both
 
         return `
         <div class="compact-item">
@@ -106,15 +113,11 @@
             <img class="compact-thumb" src="${h.img || 'https://placehold.co/100'}">
             <div class="compact-info">
               <b>${h.id} <span style="font-weight:300; font-size:9px;">[${h.type}]</span></b>
-              <small>
-                <span class="for-pill ${forClass}">${h.forStatus}</span> | 
-                🛏️ ${h.bed} | 🚿 ${h.bath}
-              </small>
-              <small style="margin-top:2px; font-weight:300;">${h.amphoe}</small>
+              <small>${h.for} | 🛏️ ${h.bed} | 🚿 ${h.bath} | <b>${h.amphoe}</b></small>
             </div>
           </div>
           <div class="compact-right">
-            <span class="price-black">฿ ${displayPrice}</span><br>
+            <span class="price-green">฿ ${displayPrice}</span><br>
             <span class="status-pill pill-${statusKey}">${h.status}</span>
           </div>
         </div>`;
@@ -124,7 +127,7 @@
     function switchPage(id) {
       ['loginPage', 'visitPage', 'historyPage', 'propertiesPage', 'appointPage'].forEach(p => { const el = document.getElementById(p); if(el) el.style.display = 'none'; });
       const target = document.getElementById(id); if(target) target.style.display = 'block';
-      document.getElementById('bottomNav').style.display = (id === 'loginPage' || id === 'registerPage') ? 'none' : 'flex';
+      document.getElementById('bottomNav').style.display = (id === 'loginPage') ? 'none' : 'flex';
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
       if(id === 'propertiesPage') document.getElementById('btnStock').classList.add('active');
       else if(id === 'visitPage' || id === 'historyPage') document.getElementById('btnCheckin').classList.add('active');
@@ -133,6 +136,7 @@
     function showVisitPage() { const p = globalProfile; document.getElementById('vDispName').innerText = p.name; document.getElementById('vDispId').innerText = p.agentId; document.getElementById('vAgentImg').src = p.imgUrl || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"; document.getElementById('vDispRole').innerText = `[${p.roleDisplay}]`; switchPage('visitPage'); }
     async function handleLogin() { const ph = document.getElementById('lPhone').value, ps = document.getElementById('lPass').value; if(!ph || !ps) return; Swal.showLoading(); const res = await fetch(`${API_URL}?action=login&phone=${ph}&password=${ps}`).then(r => r.json()); Swal.close(); if (res?.success) { localStorage.setItem('agent_phone', ph); localStorage.setItem('agent_pass', ps); globalProfile = res.profile; showVisitPage(); } else Swal.fire('Error', 'ไม่ถูกต้อง', 'error'); }
     function previewImg(i, id) { if (i.files && i.files[0]) { const r = new FileReader(); r.onload = (e) => { document.getElementById(id).src = e.target.result; }; r.readAsDataURL(i.files[0]); } }
+    function getLocation() { if (navigator.geolocation) { navigator.geolocation.getCurrentPosition((p) => { Swal.fire('สำเร็จ', 'บันทึกพิกัดแล้ว', 'success'); }); } }
     function handleLogout() { localStorage.clear(); location.reload(); }
   </script>
 </body>
