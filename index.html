@@ -2,19 +2,22 @@
 <html>
 <head>
   <base target="_top"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     :root { 
       --primary-green: #24d366; 
-      --price-green: #2e7d32; /* สีเขียวสำหรับราคา */
-      /* สีสเตตัสตาม Google Sheet */
-      --bg-available: #e8f5e9; --txt-available: #2e7d32;
-      --bg-reserved: #fff3e0; --txt-reserved: #e65100;
-      --bg-sold: #ffebee; --txt-sold: #c62828;
-      --bg-undercon: #e3f2fd; --txt-undercon: #1565c0;
-      --bg-rented: #efebe9; --txt-rented: #5d4037;
+      --app-price-green: #2e7d32;
+      /* สีสถานะตาม Google Sheet */
+      --bg-Available: #e8f5e9; --txt-Available: #2e7d32;
+      --bg-Reserved: #fff3e0; --txt-Reserved: #e65100;
+      --bg-Sold: #ffebee; --txt-Sold: #c62828;
+      --bg-UnderCon: #e3f2fd; --txt-UnderCon: #1565c0;
+      --bg-Rented: #f3e5f5; --txt-Rented: #7b1fa2;
+      --bg-Pending: #fff3e0; --txt-Pending: #e65100;
+      --bg-Rejected: #ffebee; --txt-Rejected: #c62828;
+      --bg-Approved: #e8f5e9; --txt-Approved: #2e7d32;
     }
     body { font-family: 'Kanit', sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; font-weight: 300; }
     .header { background-color: var(--primary-green); color: white; padding: 12px 15px 25px; text-align: center; border-radius: 0 0 25px 25px; }
@@ -22,33 +25,34 @@
     .container { padding: 12px; max-width: 450px; margin: 0 auto 80px; }
     .card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 15px; }
     
+    .login-logo { width: 75px; height: 75px; border-radius: 50%; object-fit: cover; margin: 0 auto 12px; display: block; border: 2.5px solid var(--primary-green); }
     .input-group { margin-bottom: 10px; text-align: left; }
     .input-group label { display: block; margin-bottom: 4px; font-weight: 400; font-size: 13px; }
     .input-group input, .input-group textarea, .input-group select { width: 100%; padding: 12px; border: 1.5px solid #eee; border-radius: 12px; box-sizing: border-box; font-family: 'Kanit'; font-size: 15px; background: #fafafa; outline: none; font-weight: 300; }
+    
     .menu-btn { width: 100%; padding: 14px; background: var(--primary-green); color: white; border: none; border-radius: 50px; font-weight: 400; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; font-size: 15px; }
     
-    /* สไตล์ป้ายสีสเตตัสหน้าสต็อก */
-    .status-pill { font-size: 8px; padding: 1px 6px; border-radius: 50px; font-weight: 400; display: inline-block; text-transform: capitalize; }
-    .pill-available { background: var(--bg-available); color: var(--txt-available); }
-    .pill-reserved { background: var(--bg-reserved); color: var(--txt-reserved); }
-    .pill-sold { background: var(--bg-sold); color: var(--txt-sold); }
-    .pill-under_con { background: var(--bg-undercon); color: var(--txt-undercon); }
-    .pill-rented { background: var(--bg-rented); color: var(--txt-rented); }
-
-    /* รายการสต็อกพรอพเพอร์ตี้กะทัดรัด */
+    /* สไตล์รายการแบบ Compact พร้อมสีสถานะ */
     .compact-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #fff; border-bottom: 1px solid #f2f2f2; }
     .compact-thumb { width: 45px; height: 45px; border-radius: 8px; object-fit: cover; margin-right: 12px; border: 1px solid #eee; }
     .compact-info b { font-size: 13px; color: #333; display: block; font-weight: 400; }
     .compact-info small { font-size: 11px; color: #888; font-weight: 300; display: block; line-height: 1.4; }
     .compact-right { text-align: right; }
-    .price-tag { color: var(--price-green); font-weight: 400; font-size: 13px; } /* ราคาสีเขียวตัวบาง */
+    .price-green { color: var(--app-price-green); font-weight: 400; font-size: 13px; }
+
+    /* ป้ายสถานะแยกสีตามชีต */
+    .status-pill { font-size: 8px; padding: 2px 8px; border-radius: 50px; font-weight: 400; display: inline-block; margin-top: 2px; text-transform: capitalize; }
+    .pill-available, .pill-approved { background: var(--bg-Available); color: var(--txt-Available); }
+    .pill-reserved, .pill-pending { background: var(--bg-Reserved); color: var(--txt-Reserved); }
+    .pill-sold, .pill-rejected { background: var(--bg-Sold); color: var(--txt-Sold); }
+    .pill-under_construction { background: var(--bg-UnderCon); color: var(--txt-UnderCon); }
+    .pill-rented { background: var(--bg-Rented); color: var(--txt-Rented); }
 
     .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; display: flex; border-top: 1px solid #eee; z-index: 1000; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
-    .nav-item { flex: 1; padding: 10px 0; text-align: center; font-size: 9px; color: #999; cursor: pointer; }
+    .nav-item { flex: 1; padding: 8px 0; text-align: center; font-size: 9px; color: #999; cursor: pointer; }
     .nav-item.active { color: var(--primary-green); font-weight: 400; }
     .nav-item i { font-size: 18px; margin-bottom: 2px; display: block; }
-    .login-logo { width: 75px; height: 75px; border-radius: 50%; object-fit: cover; margin: 0 auto 12px; display: block; border: 2.5px solid var(--primary-green); }
-    .prop-picker-btn { width: 100%; padding: 12px; border: 1.5px solid #eee; border-radius: 12px; background: #fff; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+    .img-preview { width: 70px; height: 70px; border-radius: 10px; border: 2px dashed #ccc; object-fit: cover; cursor: pointer; }
     .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
     .modal-content { background: #fff; margin: 15% auto; padding: 15px; width: 85%; border-radius: 20px; max-height: 70vh; overflow-y: auto; }
     .prop-item { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #f4f4f4; cursor: pointer; }
@@ -60,19 +64,10 @@
   <div class="header"><h1>HUAHIN.PROPERTIES</h1></div>
 
   <div class="container">
-    <div id="loginPage" class="card" style="display:none; text-align:center;">
-      <img src="https://img5.pic.in.th/file/secure-sv1/222892.jpg" class="login-logo">
-      <h3 style="margin-top:0; font-size: 18px; font-weight:400;">Agent Login</h3>
-      <div class="input-group"><label>เบอร์โทรศัพท์</label><input type="tel" id="lPhone" placeholder="08x-xxxxxxx"></div>
-      <div class="input-group"><label>รหัสผ่าน</label><input type="password" id="lPass" placeholder="******"></div>
-      <button class="menu-btn" onclick="handleLogin()">Login</button>
-      <div style="margin-top:15px; font-size:14px;">ยังไม่มีบัญชี? <span onclick="switchPage('registerPage')" style="color:var(--primary-green); font-weight:600; cursor:pointer;">สมัครสมาชิก</span></div>
-    </div>
-
-    <div id="registerPage" class="card" style="display:none;"><h3 style="margin-top:0; font-size:18px; font-weight:400;">ลงทะเบียนเอเจนต์</h3><div class="input-group"><label>ชื่อ-นามสกุล</label><input type="text" id="rName"></div><div class="input-group"><label>เบอร์โทรศัพท์</label><input type="tel" id="rPhone"></div><div class="input-group"><label>รหัสผ่าน</label><input type="password" id="rPass" placeholder="******"></div><button class="menu-btn" onclick="handleRegister()">ลงทะเบียน</button><div onclick="switchPage('loginPage')" style="text-align:center; font-size:14px; margin-top:10px; cursor:pointer;">กลับไปล็อกอิน</div></div>
+    <div id="loginPage" class="card" style="display:none; text-align:center;"><img src="https://img5.pic.in.th/file/secure-sv1/222892.jpg" class="login-logo"><h3 style="margin-top:0; font-size: 18px; font-weight:400;">Agent Login</h3><div class="input-group"><label>เบอร์โทรศัพท์</label><input type="tel" id="lPhone" placeholder="08x-xxxxxxx"></div><div class="input-group"><label>รหัสผ่าน</label><input type="password" id="lPass" placeholder="******"></div><button class="menu-btn" onclick="handleLogin()">Login</button><div style="margin-top:15px; font-size:14px;">ยังไม่มีบัญชี? <span onclick="switchPage('registerPage')" style="color:var(--primary-green); cursor:pointer;">สมัครสมาชิก</span></div></div>
 
     <div id="visitPage" style="display:none;">
-      <div class="card" style="padding: 10px; margin-bottom: 12px;"><div style="display:flex; align-items:center; gap:10px;"><img id="vAgentImg" src="" style="width:45px; height:45px; border-radius:50%; border:2px solid var(--primary-green);"><div style="text-align:left"><div style="font-weight:400; font-size:13px;"><span id="vDispName"></span> <small id="vDispRole" style="color:#888;"></small></div><div style="font-size:11px; color:#666;">ID: <span id="vDispId"></span> <span id="vStatusBadge" class="status-pill pill-available" style="font-size:9px;">Approved</span></div></div></div></div>
+      <div class="card" style="padding: 10px; margin-bottom: 12px;"><div style="display:flex; align-items:center; gap:10px;"><img id="vAgentImg" src="" style="width:45px; height:45px; border-radius:50%; border:2px solid var(--primary-green);"><div style="text-align:left"><div style="font-weight:400; font-size:13px;"><span id="vDispName"></span> <small id="vDispRole" style="color:#888;"></small></div><div style="font-size:11px; color:#666;">ID: <span id="vDispId"></span> <span id="vStatusPill" class="status-pill"></span></div></div></div></div>
       <div id="checkinForm" class="card">
         <h3 style="margin-top:0; font-size: 16px; font-weight:400;"><i class="fa-solid fa-file-signature"></i> บันทึกพาชมบ้าน</h3>
         <div class="input-group"><label>Property ID</label><div class="prop-picker-btn" onclick="openPropPicker('vProp')"><div id="vPropDisplay" style="display:flex; align-items:center;"><img id="vPropImg" src="" style="width:25px; height:25px; border-radius:4px; margin-right:8px; display:none;"><span id="vPropText">-- เลือกรายการ --</span></div><i class="fa-solid fa-chevron-down" style="font-size:12px; color:#999;"></i></div><input type="hidden" id="vPropId"></div>
@@ -86,22 +81,18 @@
       </div>
     </div>
 
-    <div id="appointPage" class="card" style="display:none;"><h3 style="margin-top:0; font-size: 18px; font-weight:400;"><i class="fa-solid fa-calendar-check"></i> นัดดูบ้าน</h3><div class="input-group"><label>Property ID</label><div class="prop-picker-btn" onclick="openPropPicker('aProp')"><div id="aPropDisplay" style="display:flex; align-items:center;"><img id="aPropImg" src="" style="width:25px; height:25px; border-radius:4px; margin-right:8px; display:none;"><span id="aPropText">-- เลือกรายการ --</span></div><i class="fa-solid fa-chevron-down" style="font-size:12px; color:#999;"></i></div><input type="hidden" id="aPropId"></div><div class="input-group"><label>ยูนิต / หลังอื่นๆ</label><input type="text" id="aSubPropId" placeholder="เช่น HH0001,M14..."></div><div class="input-group"><label>ชื่อลูกค้า</label><input type="text" id="aClientName"></div><div class="input-group"><label>วัน-เวลา</label><input type="datetime-local" id="aDate"></div><div class="input-group"><label>บันทึก (Note)</label><textarea id="aNotes" rows="2"></textarea></div><button class="menu-btn" onclick="handleAddAppoint()">บันทึกนัดหมาย</button></div>
-
     <div id="propertiesPage" style="display:none; background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
       <div style="padding: 12px; border-bottom: 1.5px solid #f4f4f4;"><b style="font-size: 14px; font-weight:400;">🏠 รายการพรอพเพอร์ตี้ (Stock)</b></div>
       <div id="propertiesList"></div>
     </div>
 
     <div id="historyPage" style="display:none; background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);"><div style="padding: 12px; border-bottom: 1.5px solid #f4f4f4; display: flex; justify-content: space-between;"><b>ประวัติการพาชม</b><i class="fa-solid fa-rotate" onclick="loadHistory()" style="color:#999; cursor:pointer;"></i></div><div id="historyList"></div><div style="padding: 12px;"><button class="menu-btn" onclick="switchPage('visitPage')">กลับ</button></div></div>
-
-    <div id="propPickerModal" class="modal"><div class="modal-content"><h4 style="margin-top:0; font-weight:400;">เลือกพรอพเพอร์ตี้</h4><div id="propPickerList"></div><button class="menu-btn" style="background:#999; margin-top:15px;" onclick="closePropPicker()">ยกเลิก</button></div></div>
   </div>
 
   <div id="bottomNav" class="bottom-nav" style="display:none;"><div class="nav-item" id="btnStock" onclick="openProperties()"><i class="fa-solid fa-house"></i><div>สต็อก</div></div><div class="nav-item" id="btnAppoint" onclick="switchPage('appointPage')"><i class="fa-solid fa-calendar-check"></i><div>นัดหมาย</div></div><div class="nav-item active" id="btnCheckin" onclick="showVisitPage()"><i class="fa-solid fa-file-signature"></i><div>เช็คอิน</div></div><div class="nav-item" id="btnLogout" onclick="handleLogout()"><i class="fa-solid fa-sign-out-alt"></i><div>ออก</div></div></div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbyLB6o3Nqm8QtYSkneLHDva0T8hxkLHVl5iu1EM2IrswK8uyPkGQ4VlvP77nXHIBMB7KA/exec"; 
+    const API_URL = "URL_APPS_SCRIPT_ของคุณ"; 
     let globalProfile = null, img1Base64 = "", img2Base64 = "", locationLink = "", propertyList = [], currentTarget = '', allHouses = [];
 
     async function initApp() {
@@ -114,16 +105,15 @@
     }
 
     function switchPage(id) {
-      ['loginPage', 'registerPage', 'visitPage', 'historyPage', 'propertiesPage', 'appointPage'].forEach(p => { if(document.getElementById(p)) document.getElementById(p).style.display = 'none'; });
+      ['loginPage', 'visitPage', 'historyPage', 'propertiesPage'].forEach(p => { if(document.getElementById(p)) document.getElementById(p).style.display = 'none'; });
       document.getElementById(id).style.display = 'block';
-      document.getElementById('bottomNav').style.display = (id === 'loginPage' || id === 'registerPage') ? 'none' : 'flex';
+      document.getElementById('bottomNav').style.display = (id === 'loginPage') ? 'none' : 'flex';
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
       if(id === 'propertiesPage') document.getElementById('btnStock').classList.add('active');
-      else if(id === 'appointPage') document.getElementById('btnAppoint').classList.add('active');
       else if(id === 'visitPage' || id === 'historyPage') document.getElementById('btnCheckin').classList.add('active');
     }
 
-    // หน้าสต็อก: ปรับสีสเตตัสให้ตรงกับชีต
+    // ฟังก์ชันแสดงสต็อกพร้อมสีสถานะตามชีต
     async function openProperties() {
       switchPage('propertiesPage');
       const list = document.getElementById('propertiesList');
@@ -136,21 +126,21 @@
         let rawPrice = h.price ? h.price.toString().replace(/[^0-9.]/g, '') : '0';
         let displayPrice = rawPrice ? Number(rawPrice).toLocaleString() : '0';
         
-        // กำหนดคลาสสีสเตตัส
-        let st = h.status ? h.status.toLowerCase().replace(' ', '_') : 'available';
-        let pillClass = `pill-${st}`;
+        // แปลงชื่อสถานะเป็น Class CSS
+        let statusKey = h.status.toLowerCase().replace(/\s+/g, '_');
+        let pillClass = `pill-${statusKey}`;
 
         return `
         <div class="compact-item">
           <div style="display:flex; align-items:center;">
             <img class="compact-thumb" src="${h.img || 'https://placehold.co/100?text=No+Img'}">
             <div class="compact-info">
-              <b>${h.id} <span style="font-weight:300; font-size:10px;">[${h.type}]</span></b>
+              <b>${h.id} <span style="font-weight:300; font-size:11px;">[${h.type}]</span></b>
               <small>${h.for} | 🛏️ ${h.bed} | 🚿 ${h.bath}</small>
             </div>
           </div>
           <div class="compact-right">
-            <span class="price-tag">฿ ${displayPrice}</span><br>
+            <span class="price-green">฿ ${displayPrice}</span><br>
             <span class="status-pill ${pillClass}">${h.status}</span>
           </div>
         </div>`;
@@ -161,27 +151,15 @@
       const res = await fetch(`${API_URL}?action=getVisitHistory&agentId=${globalProfile.agentId}`).then(r => r.json());
       const list = document.getElementById('historyList');
       list.innerHTML = res.history.map(item => {
-        let stClass = "pill-reserved"; // default orange
-        if(item.status.toLowerCase().includes("appro")) stClass = "pill-available";
-        else if(item.status.toLowerCase().includes("rejec")) stClass = "pill-sold";
+        let statusKey = item.status.toLowerCase().replace(/\s+/g, '_');
+        let stClass = `pill-${statusKey}`;
         return `<div class="compact-item"><div style="display:flex; align-items:center;"><img class="compact-thumb" src="${item.propImg}"><div class="compact-info"><b>${item.propertyId} ${item.subPropertyId?'('+item.subPropertyId+')':''}</b><small>ลูกค้า: ${item.clientName}</small></div></div><div class="compact-right"><div class="status-pill ${stClass}">${item.status}</div><br><small style="font-size:9px; color:#bbb;">${item.date.split(' ')[0]}</small></div></div>`;
       }).join('');
     }
 
     async function handleLogin() { const ph = document.getElementById('lPhone').value, ps = document.getElementById('lPass').value; Swal.showLoading(); const res = await fetch(`${API_URL}?action=login&phone=${ph}&password=${ps}`).then(r => r.json()); Swal.close(); if (res?.success) { localStorage.setItem('agent_phone', ph); localStorage.setItem('agent_pass', ps); globalProfile = res.profile; showVisitPage(); } else Swal.fire('Error', 'เบอร์หรือรหัสผ่านผิด', 'error'); }
-    async function handleRegister() { const data = { action: "register", name: document.getElementById('rName').value, phone: document.getElementById('rPhone').value, password: document.getElementById('rPass').value }; Swal.showLoading(); const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(data) }).then(r => r.json()); Swal.close(); if(res.success) Swal.fire('สำเร็จ', 'สมัครแล้ว รอแอดมินอนุมัติ', 'success').then(() => switchPage('loginPage')); }
-    async function handleRecordVisit() { const data = { action: "recordVisit", agentId: globalProfile.agentId, agentName: globalProfile.name, agentPhone: localStorage.getItem('agent_phone'), propertyId: document.getElementById('vPropId').value, subPropertyId: document.getElementById('vSubPropId').value, clientName: document.getElementById('vClientName').value, notes: document.getElementById('vNotes').value, image1: img1Base64, image2: img2Base64, locationLink: locationLink }; if (!data.propertyId || !data.clientName) return Swal.fire('เตือน', 'ระบุโครงการและลูกค้า', 'warning'); Swal.showLoading(); const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(data) }).then(r => r.json()); Swal.close(); if (res.success) Swal.fire('สำเร็จ', 'บันทึกเรียบร้อย', 'success').then(() => location.reload()); }
-    async function handleAddAppoint() { const data = { action: "addAppoint", agentId: globalProfile.agentId, agentName: globalProfile.name, propertyId: document.getElementById('aPropId').value, subPropertyId: document.getElementById('aSubPropId').value, clientName: document.getElementById('aClientName').value, date: document.getElementById('aDate').value, notes: document.getElementById('aNotes').value }; if(!data.propertyId || !data.date) return Swal.fire('เตือน', 'กรอกข้อมูลให้ครบ', 'warning'); Swal.showLoading(); const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(data) }).then(r => r.json()); Swal.close(); if(res.success) Swal.fire('สำเร็จ', 'บันทึกนัดหมายแล้ว', 'success').then(() => showVisitPage()); }
-    
-    function showVisitPage() { 
-      const p = globalProfile; document.getElementById('vDispName').innerText = p.name; document.getElementById('vDispId').innerText = p.agentId; document.getElementById('vAgentImg').src = p.imgUrl || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"; document.getElementById('vDispRole').innerText = `[${p.roleDisplay}]`; 
-      const b = document.getElementById('vStatusPill'); b.innerText = p.status; 
-      if (p.status.toLowerCase().includes('appro') || p.roleDisplay === 'Admin') { b.className = "status-pill pill-available"; document.getElementById('checkinForm').style.display = 'block'; } 
-      else { b.className = "status-pill pill-reserved"; document.getElementById('checkinForm').style.display = 'none'; } 
-      switchPage('visitPage'); 
-      if(propertyList.length === 0) fetch(`${API_URL}?action=getPropertyListData`).then(r=>r.json()).then(res => propertyList = res.data);
-    }
-    function openPropPicker(t) { currentTarget = t; showPicker(); }
+    function showVisitPage() { const p = globalProfile; document.getElementById('vDispName').innerText = p.name; document.getElementById('vDispId').innerText = p.agentId; document.getElementById('vAgentImg').src = p.imgUrl || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"; document.getElementById('vDispRole').innerText = `[${p.roleDisplay}]`; const b = document.getElementById('vStatusPill'); b.innerText = p.status; let statusKey = p.status.toLowerCase(); b.className = `status-pill pill-${statusKey}`; if (statusKey.includes('appro') || p.roleDisplay === 'Admin') { document.getElementById('checkinForm').style.display = 'block'; } else { document.getElementById('checkinForm').style.display = 'none'; } switchPage('visitPage'); }
+    function openPropPicker(t) { currentTarget = t; if(propertyList.length === 0) { fetch(`${API_URL}?action=getPropertyListData`).then(r => r.json()).then(res => { propertyList = res.data; showPicker(); }); } else showPicker(); }
     function showPicker() { const list = document.getElementById('propPickerList'); list.innerHTML = propertyList.map(p => `<div class="prop-item" onclick="selectProperty('${p.id}', '${p.img}')"><img src="${p.img}"><b>${p.id}</b></div>`).join(''); document.getElementById('propPickerModal').style.display = 'block'; }
     function selectProperty(id, img) { document.getElementById(currentTarget + 'Id').value = id; document.getElementById(currentTarget + 'Text').innerText = id; const imgEl = document.getElementById(currentTarget + 'Img'); imgEl.src = img; imgEl.style.display = 'block'; closePropPicker(); }
     function closePropPicker() { document.getElementById('propPickerModal').style.display = 'none'; }
