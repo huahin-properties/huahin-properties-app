@@ -7,30 +7,36 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     :root { 
-      --primary-green: #24d366; --app-red: #d32f2f;
-      --txt-Approved: #2e7d32; --txt-Pending: #e65100; --txt-Rejected: #c62828;
+      --primary-green: #24d366; 
+      /* สีสถานะตาม Google Sheet */
+      --bg-Appro: #e8f5e9; --txt-Appro: #2e7d32;
+      --bg-Pending: #fff3e0; --txt-Pending: #e65100;
+      --bg-Rejected: #ffebee; --txt-Rejected: #c62828;
     }
     body { font-family: 'Kanit', sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
     .header { background-color: var(--primary-green); color: white; padding: 20px 15px 40px; text-align: center; border-radius: 0 0 30px 30px; }
     .container { padding: 15px; max-width: 450px; margin: 0 auto 80px; }
     .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
     
-    /* ปรับปรุงช่อง Input และ Textarea ให้สวยงามโค้งมน */
+    /* ปรับช่อง Input และ Textarea ให้โค้งมนสวยงาม */
     .input-group { margin-bottom: 15px; text-align: left; position: relative; }
     .input-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px; }
     .input-group input, .input-group textarea { 
       width: 100%; padding: 12px; border: 1.5px solid #eee; border-radius: 12px; 
       box-sizing: border-box; font-family: 'Kanit'; font-size: 16px; background: #fafafa;
     }
-    
+    .eye-btn { position: absolute; right: 12px; top: 38px; color: #999; cursor: pointer; z-index: 10; font-size: 18px; }
     .menu-btn { width: 100%; padding: 16px; background: var(--primary-green); color: white; border: none; border-radius: 50px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; font-size: 16px; }
+    
     .agent-status-card { display: flex; align-items: center; gap: 15px; background: #fff; padding: 15px; border-radius: 15px; border: 1px solid #eee; margin-bottom: 20px; }
     .agent-img-big { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-green); }
-    
-    /* สไตล์สีตัวอักษรของสถานะในหน้าประวัติ */
-    .status-text-Approved { color: var(--txt-Approved); font-weight: bold; }
-    .status-text-Pending { color: var(--txt-Pending); font-weight: bold; }
-    .status-text-Rejected { color: var(--txt-Rejected); font-weight: bold; }
+
+    /* ป้ายสถานะหน้าประวัติแบบมีพื้นหลัง */
+    .hist-item { display: flex; justify-content: space-between; padding: 15px 12px; background: #fff; border-radius: 15px; margin-bottom: 10px; border: 1px solid #eee; }
+    .status-pill { font-size: 12px; padding: 4px 12px; border-radius: 50px; font-weight: 600; }
+    .pill-Appro { background: var(--bg-Appro); color: var(--txt-Appro); }
+    .pill-Pending { background: var(--bg-Pending); color: var(--txt-Pending); }
+    .pill-Rejected { background: var(--bg-Rejected); color: var(--txt-Rejected); }
 
     .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; display: flex; border-top: 1px solid #eee; z-index: 1000; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
     .nav-item { flex: 1; padding: 10px 0; text-align: center; font-size: 10px; color: #999; cursor: pointer; }
@@ -43,6 +49,32 @@
   <div class="header"><h1 style="font-size: 18px; margin: 0;">HUAHIN.PROPERTIES</h1></div>
 
   <div class="container">
+    <div id="loginPage" class="card" style="display:none;">
+      <h3 style="margin-top:0">Agent Access</h3>
+      <div class="input-group"><label>เบอร์โทรศัพท์</label><input type="tel" id="lPhone" placeholder="08x-xxxxxxx"></div>
+      <div class="input-group">
+        <label>รหัสผ่าน</label>
+        <input type="password" id="lPass" placeholder="ระบุรหัสผ่าน">
+        <i class="fa-solid fa-eye eye-btn" id="toggleEye" onclick="togglePass('lPass', 'toggleEye')"></i>
+      </div>
+      <button class="menu-btn" onclick="handleLogin()">Login</button>
+      <div style="text-align:center; font-size:14px; margin-top:10px;">ยังไม่มีบัญชี? <span onclick="switchPage('registerPage')" style="color:var(--primary-green); cursor:pointer; font-weight:600;">สมัครสมาชิก</span></div>
+    </div>
+
+    <div id="registerPage" class="card" style="display:none;">
+      <h3 style="margin-top:0">Agent Register</h3>
+      <div class="input-group"><label>ชื่อ-นามสกุล</label><input type="text" id="rName"></div>
+      <div class="input-group"><label>เบอร์โทรศัพท์</label><input type="tel" id="rPhone" placeholder="08x-xxxxxxx"></div>
+      <div class="input-group"><label>ไอดีไลน์</label><input type="text" id="rLine"></div>
+      <div class="input-group">
+        <label>กำหนดรหัสผ่าน</label>
+        <input type="password" id="rPass" placeholder="สำหรับเข้าแอป">
+        <i class="fa-solid fa-eye eye-btn" id="toggleEyeReg" onclick="togglePass('rPass', 'toggleEyeReg')"></i>
+      </div>
+      <button class="menu-btn" onclick="handleRegister()">ลงทะเบียน</button>
+      <div onclick="switchPage('loginPage')" style="text-align:center; font-size:14px; margin-top:10px; cursor:pointer;">กลับไปล็อกอิน</div>
+    </div>
+
     <div id="visitPage" style="display:none;">
       <div class="agent-status-card">
         <img id="vAgentImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="agent-img-big">
@@ -65,13 +97,13 @@
             <input type="file" id="file2" style="display:none" onchange="previewImg(this, 'vImg2')" accept="image/*">
           </div>
         </div>
-        <button class="menu-btn" onclick="getLocation()" style="background:#4285F4;"><i class="fa-solid fa-location-crosshairs"></i> เช็คอินพิกัด GPS</button>
-        <div class="input-group"><label>บันทึกเพิ่มเติม</label><textarea id="vNotes" rows="2" placeholder="รายละเอียดอื่นๆ"></textarea></div>
+        <button class="menu-btn" onclick="getLocation()" style="background:#4285F4;"><i class="fa-solid fa-location-crosshairs"></i> เช็คอิน GPS</button>
+        <div class="input-group"><label>บันทึกเพิ่มเติม</label><textarea id="vNotes" rows="2"></textarea></div>
         <button class="menu-btn" onclick="handleRecordVisit()">ยืนยันข้อมูล</button>
-        <button class="menu-btn" onclick="switchPage('historyPage')" style="background:#666;">ดูประวัติย้อนหลัง</button>
+        <button class="menu-btn" onclick="switchPage('historyPage')" style="background:#666;">ดูประวัติงาน</button>
       </div>
 
-      <div id="lockMessage" class="card" style="display:none; text-align:center; padding:40px 10px;">
+      <div id="lockMessage" class="card" style="display:none; text-align:center;">
         <i class="fa-solid fa-lock" style="font-size:50px; color:#e65100; margin-bottom:15px;"></i>
         <h3 style="color:#e65100">บัญชีรอการอนุมัติ</h3>
       </div>
@@ -79,32 +111,26 @@
 
     <div id="historyPage" class="card" style="display:none;">
       <h3 style="margin-top:0">ประวัติการพาชม</h3>
-      <div id="historyList" style="text-align:left;"></div>
+      <div id="historyList"></div>
       <button class="menu-btn" onclick="switchPage('visitPage')" style="margin-top:20px;">กลับ</button>
     </div>
+
+    <div id="propertiesPage" style="display:none;"><div id="propertiesList"></div></div>
 
     <div id="appointPage" class="card" style="display:none;">
       <h3 style="margin-top:0"><i class="fa-solid fa-calendar-check"></i> นัดหมายลูกค้า</h3>
       <div class="input-group"><label>รหัสบ้าน</label><input type="text" id="aPropId" placeholder="HHXXXX"></div>
       <div class="input-group"><label>ชื่อลูกค้า</label><input type="text" id="aClientName"></div>
-      <div class="input-group"><label>วัน-เวลานัดชม</label><input type="datetime-local" id="aDate"></div>
+      <div class="input-group"><label>วัน-เวลานัดหมาย</label><input type="datetime-local" id="aDate"></div>
       <div class="input-group"><label>บันทึก</label><textarea id="aNotes" rows="2"></textarea></div>
       <button class="menu-btn" onclick="handleAddAppoint()">บันทึกนัดหมาย</button>
-    </div>
-
-    <div id="propertiesPage" style="display:none;"><div id="propertiesList"></div></div>
-    <div id="loginPage" class="card" style="display:none;">
-       <h3 style="margin-top:0">Agent Login</h3>
-       <div class="input-group"><label>เบอร์โทรศัพท์</label><input type="tel" id="lPhone" placeholder="08x-xxxxxxx"></div>
-       <div class="input-group"><label>รหัสผ่าน</label><input type="password" id="lPass"><i class="fa-solid fa-eye eye-btn" style="position:absolute;right:15px;top:38px;cursor:pointer" onclick="togglePass('lPass')"></i></div>
-       <button class="menu-btn" onclick="handleLogin()">Login</button>
     </div>
   </div>
 
   <div id="bottomNav" class="bottom-nav" style="display:none;">
     <div class="nav-item" id="btnStock" onclick="openProperties('home')"><i class="fa-solid fa-house"></i><div>สต็อก</div></div>
     <div class="nav-item" id="btnAppoint" onclick="switchPage('appointPage')"><i class="fa-solid fa-calendar-check"></i><div>นัดหมาย</div></div>
-    <div class="nav-item" id="btnCheckin" onclick="showVisitPage()"><i class="fa-solid fa-file-signature"></i><div>เช็คอิน</div></div>
+    <div class="nav-item active" id="btnCheckin" onclick="showVisitPage()"><i class="fa-solid fa-file-signature"></i><div>เช็คอิน</div></div>
     <div class="nav-item" id="btnLogout" onclick="handleLogout()"><i class="fa-solid fa-sign-out-alt"></i><div>ออก</div></div>
   </div>
 
@@ -114,11 +140,20 @@
 
     async function initApp() {
       const ph = localStorage.getItem('agent_phone'), ps = localStorage.getItem('agent_pass');
+      const urlParams = new URLSearchParams(window.location.search);
+      const target = urlParams.get('page');
+
       if (ph && ps) {
         const res = await fetch(`${API_URL}?action=login&phone=${ph}&password=${ps}`).then(r => r.json());
-        if (res?.success) { globalProfile = res.profile; showVisitPage(); } 
+        if (res?.success) { globalProfile = res.profile; if(target === 'properties') openProperties('home'); else showVisitPage(); } 
         else switchPage('loginPage');
       } else switchPage('loginPage');
+    }
+
+    function togglePass(id, eyeId) {
+      const x = document.getElementById(id), icon = document.getElementById(eyeId);
+      if (x.type === "password") { x.type = "text"; icon.className = "fa-solid fa-eye-slash eye-btn"; } 
+      else { x.type = "password"; icon.className = "fa-solid fa-eye eye-btn"; }
     }
 
     function showVisitPage() {
@@ -135,33 +170,40 @@
       switchPage('visitPage');
     }
 
+    async function loadHistory() {
+      const res = await fetch(`${API_URL}?action=getVisitHistory&agentId=${globalProfile.agentId}`).then(r => r.json());
+      const list = document.getElementById('historyList');
+      list.innerHTML = res.history.map(item => {
+        // กำหนด Class สีตามข้อความสถานะ
+        let stClass = "pill-Pending";
+        if(item.status.includes("Appro")) stClass = "pill-Appro";
+        else if(item.status.includes("Rejec")) stClass = "pill-Rejected";
+
+        return `
+        <div class="hist-item">
+          <div style="text-align:left;"><b>${item.propertyId}</b><br><small>${item.clientName}</small></div>
+          <div style="text-align:right;">
+             <div class="status-pill ${stClass}">${item.status}</div>
+             <small style="color:#999;">${item.date.split(' ')[0]}</small>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
     async function handleLogin() {
       const ph = document.getElementById('lPhone').value, ps = document.getElementById('lPass').value;
+      if(!ph || !ps) return Swal.fire('เตือน', 'กรุณากรอกข้อมูลให้ครบ', 'warning');
       Swal.showLoading();
       const res = await fetch(`${API_URL}?action=login&phone=${ph}&password=${ps}`).then(r => r.json());
       Swal.close();
       if (res?.success) { localStorage.setItem('agent_phone', ph); localStorage.setItem('agent_pass', ps); globalProfile = res.profile; showVisitPage(); }
-      else Swal.fire('Error', 'ไม่ถูกต้อง', 'error');
-    }
-
-    // ฟังก์ชันดึงประวัติพร้อมเปลี่ยนสีตัวอักษรตามสถานะ
-    async function loadHistory() {
-      const res = await fetch(`${API_URL}?action=getVisitHistory&agentId=${globalProfile.agentId}`).then(r => r.json());
-      const list = document.getElementById('historyList');
-      list.innerHTML = res.history.map(item => `
-        <div style="display:flex; justify-content:space-between; padding:15px 10px; border-bottom:1px solid #eee; background:#fff; border-radius:12px; margin-bottom:8px;">
-          <div><b>${item.propertyId}</b><br><small>${item.clientName}</small></div>
-          <div style="text-align:right;">
-             <div class="status-text-${item.status}">${item.status}</div>
-             <small style="color:#999;">${item.date.split(' ')[0]}</small>
-          </div>
-        </div>`).join('');
+      else Swal.fire('Error', 'เบอร์โทรหรือรหัสผ่านไม่ถูกต้อง', 'error');
     }
 
     function switchPage(id) {
-      ['loginPage', 'visitPage', 'historyPage', 'propertiesPage', 'appointPage'].forEach(p => { if(document.getElementById(p)) document.getElementById(p).style.display = 'none'; });
+      ['loginPage', 'registerPage', 'visitPage', 'historyPage', 'propertiesPage', 'appointPage'].forEach(p => { if(document.getElementById(p)) document.getElementById(p).style.display = 'none'; });
       document.getElementById(id).style.display = 'block';
-      document.getElementById('bottomNav').style.display = (id === 'loginPage') ? 'none' : 'flex';
+      document.getElementById('bottomNav').style.display = (id === 'loginPage' || id === 'registerPage') ? 'none' : 'flex';
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
       if(id === 'visitPage') document.getElementById('btnCheckin').classList.add('active');
       if(id === 'appointPage') document.getElementById('btnAppoint').classList.add('active');
@@ -170,7 +212,7 @@
     }
 
     function previewImg(input, id) { if (input.files && input.files[0]) { const reader = new FileReader(); reader.onload = (e) => { document.getElementById(id).src = e.target.result; if (id === 'vImg1') img1Base64 = e.target.result; else img2Base64 = e.target.result; }; reader.readAsDataURL(input.files[0]); } }
-    function getLocation() { if (navigator.geolocation) { navigator.geolocation.getCurrentPosition((pos) => { locationLink = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`; Swal.fire('สำเร็จ', 'พิกัดพร้อมส่ง', 'success'); }); } }
+    function getLocation() { if (navigator.geolocation) { navigator.geolocation.getCurrentPosition((pos) => { locationLink = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`; Swal.fire('พิกัดถูกบันทึกแล้ว', '', 'success'); }); } }
     async function handleRecordVisit() {
       const data = { action: "recordVisit", agentId: globalProfile.agentId, agentName: globalProfile.name, agentPhone: globalProfile.phone, propertyId: document.getElementById('vPropId').value, clientName: document.getElementById('vClientName').value, notes: document.getElementById('vNotes').value, image1: img1Base64, image2: img2Base64, locationLink: locationLink };
       if (!data.propertyId || !data.clientName) return Swal.fire('เตือน', 'กรุณากรอกข้อมูลสำคัญ', 'warning');
@@ -181,15 +223,21 @@
     }
     async function handleAddAppoint() {
       const data = { action: "addAppoint", agentId: globalProfile.agentId, agentName: globalProfile.name, propertyId: document.getElementById('aPropId').value, clientName: document.getElementById('aClientName').value, date: document.getElementById('aDate').value, notes: document.getElementById('aNotes').value };
-      if(!data.propertyId || !data.date) return Swal.fire('เตือน', 'กรุณาระบุมนัดหมาย', 'warning');
+      if(!data.propertyId || !data.date) return Swal.fire('เตือน', 'กรุณาระบุนัดหมาย', 'warning');
       Swal.showLoading();
       const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(data) }).then(r => r.json());
       Swal.close();
       if(res.success) Swal.fire('สำเร็จ', 'บันทึกนัดหมายแล้ว', 'success').then(() => showVisitPage());
     }
+    async function handleRegister() {
+      const data = { action: "register", name: document.getElementById('rName').value, phone: document.getElementById('rPhone').value, lineId: document.getElementById('rLine').value, password: document.getElementById('rPass').value };
+      Swal.showLoading();
+      const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(data) }).then(r => r.json());
+      Swal.close();
+      if(res.success) Swal.fire('สำเร็จ', 'สมัครแล้ว รอแอดมินอนุมัติครับ', 'success').then(() => switchPage('loginPage'));
+    }
     async function openProperties(cat) { switchPage('propertiesPage'); if(allHouses.length === 0) { Swal.showLoading(); allHouses = await fetch(`${API_URL}?action=getProperties&role=${globalProfile?.role || 'customer'}&lang=th`).then(r => r.json()); Swal.close(); } renderList(cat); }
     function renderList(cat) { const list = document.getElementById('propertiesList'); list.innerHTML = ''; allHouses.filter(h => cat === 'home' || h[cat] === "Y").forEach(h => { list.innerHTML += `<div class="house-card" style="display:flex; background:#fff; margin-bottom:10px; border-radius:12px; padding:10px;"><img src="${h.img || 'https://placehold.co/100'}" style="width:70px;height:70px;border-radius:8px;object-fit:cover;"><div style="padding-left:10px;"><b>${h.title}</b><br><span style="color:red">฿ ${h.price}</span><br><small>ID: ${h.id}</small></div></div>`; }); }
-    function togglePass(id) { const x = document.getElementById(id); x.type = x.type === "password" ? "text" : "password"; }
     function handleLogout() { localStorage.clear(); location.reload(); }
   </script>
 </body>
