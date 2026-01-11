@@ -13,13 +13,11 @@
     .container { padding: 12px; max-width: 450px; margin: 0 auto 80px; }
     .card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 15px; }
     
-    /* สไตล์หน้า Login */
     .login-logo { width: 75px; height: 75px; border-radius: 50%; object-fit: cover; margin: 0 auto 12px; display: block; border: 2.5px solid var(--primary-green); }
     .input-group { margin-bottom: 10px; text-align: left; }
     .input-group label { display: block; margin-bottom: 4px; font-weight: 600; font-size: 13px; }
     .input-group input, .input-group textarea, .input-group select { width: 100%; padding: 12px; border: 1.5px solid #eee; border-radius: 12px; box-sizing: border-box; font-family: 'Kanit'; font-size: 15px; background: #fafafa; outline: none; }
     
-    /* ระบบเลือก Property */
     .prop-picker-btn { width: 100%; padding: 12px; border: 1.5px solid #eee; border-radius: 12px; background: #fff; display: flex; align-items: center; justify-content: space-between; cursor: pointer; box-sizing: border-box; }
     .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
     .modal-content { background: #fff; margin: 15% auto; padding: 15px; width: 85%; border-radius: 20px; max-height: 70vh; overflow-y: auto; }
@@ -31,9 +29,8 @@
     .nav-item { flex: 1; padding: 8px 0; text-align: center; font-size: 9px; color: #999; cursor: pointer; }
     .nav-item.active { color: var(--primary-green); }
     
-    /* รายการประวัติแบบกะทัดรัด */
     .hist-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #fff; border-bottom: 1px solid #f2f2f2; }
-    .status-pill { font-size: 9px; padding: 1px 6px; border-radius: 50px; font-weight: 600; }
+    .status-pill { font-size: 9px; padding: 1px 6px; border-radius: 50px; font-weight: 600; display: inline-block; }
     .pill-Appro { background: var(--bg-Appro); color: var(--txt-Appro); }
     .pill-Pending { background: var(--bg-Pending); color: var(--txt-Pending); }
     .pill-Rejected { background: var(--bg-Rejected); color: var(--txt-Rejected); }
@@ -49,14 +46,9 @@
       <img src="https://img5.pic.in.th/file/secure-sv1/222892.jpg" class="login-logo">
       <h3 style="margin-top:0; font-size: 18px;">Agent Login</h3>
       <div class="input-group"><label>เบอร์โทรศัพท์</label><input type="tel" id="lPhone" placeholder="08x-xxxxxxx"></div>
-      <div class="input-group">
-        <label>รหัสผ่าน</label>
-        <input type="password" id="lPass" placeholder="******">
-      </div>
+      <div class="input-group"><label>รหัสผ่าน</label><input type="password" id="lPass" placeholder="******"></div>
       <button class="menu-btn" onclick="handleLogin()">Login</button>
-      <div style="margin-top:15px; font-size:14px;">
-        ยังไม่มีบัญชี? <span onclick="switchPage('registerPage')" style="color:var(--primary-green); font-weight:600; cursor:pointer;">สมัครสมาชิก</span>
-      </div>
+      <div style="margin-top:15px; font-size:14px;">ยังไม่มีบัญชี? <span onclick="switchPage('registerPage')" style="color:var(--primary-green); font-weight:600; cursor:pointer;">สมัครสมาชิก</span></div>
     </div>
 
     <div id="registerPage" class="card" style="display:none;">
@@ -84,18 +76,12 @@
         <div class="input-group">
           <label>Property ID (โครงการหลัก)</label>
           <div class="prop-picker-btn" onclick="openPropPicker('vProp')">
-            <div id="vPropDisplay" style="display:flex; align-items:center;">
-              <img id="vPropImg" src="" style="width:25px; height:25px; border-radius:4px; margin-right:8px; display:none;">
-              <span id="vPropText">-- เลือกรายการ --</span>
-            </div>
+            <div id="vPropDisplay" style="display:flex; align-items:center;"><img id="vPropImg" src="" style="width:25px; height:25px; border-radius:4px; margin-right:8px; display:none;"><span id="vPropText">-- เลือกรายการ --</span></div>
             <i class="fa-solid fa-chevron-down" style="font-size:12px; color:#999;"></i>
           </div>
           <input type="hidden" id="vPropId">
         </div>
-        <div class="input-group">
-          <label>ยูนิต / หลังอื่นๆ</label>
-          <input type="text" id="vSubPropId" placeholder="เช่น HH0001,M14,HH0005,M12">
-        </div>
+        <div class="input-group"><label>ยูนิต / หลังอื่นๆ</label><input type="text" id="vSubPropId" placeholder="เช่น HH0001,M14,HH0005,M12"></div>
         <div class="input-group"><label>ชื่อลูกค้า</label><input type="text" id="vClientName"></div>
         <div class="input-group">
           <label>ถ่ายรูป (2 รูป)</label>
@@ -104,8 +90,10 @@
             <input type="file" id="file1" style="display:none" onchange="previewImg(this, 'vImg1')"><input type="file" id="file2" style="display:none" onchange="previewImg(this, 'vImg2')">
           </div>
         </div>
-        <button class="menu-btn" onclick="getLocation()" style="background:#4285F4; padding: 12px;"><i class="fa-solid fa-location-dot"></i> เช็คอิน GPS</button>
         <div class="input-group"><label>บันทึก/หมายเหตุ (Note)</label><textarea id="vNotes" rows="2" placeholder="รายละเอียดเพิ่มเติมหน้างาน..."></textarea></div>
+        <button class="menu-btn" onclick="getLocation()" style="background:#4285F4; padding: 12px;"><i class="fa-solid fa-location-dot"></i> เช็คอิน GPS</button>
+        <div id="locStatus" style="font-size:11px; color:var(--txt-Appro); text-align:center; display:none; margin-bottom:10px;">✅ พิกัดพร้อมบันทึก</div>
+        
         <button class="menu-btn" onclick="handleRecordVisit()">ยืนยันข้อมูล</button>
         <button class="menu-btn" onclick="switchPage('historyPage')" style="background:#666; font-size: 12px;">ดูประวัติงาน</button>
       </div>
@@ -117,10 +105,7 @@
       <div class="input-group">
         <label>Property ID (โครงการหลัก)</label>
         <div class="prop-picker-btn" onclick="openPropPicker('aProp')">
-            <div id="aPropDisplay" style="display:flex; align-items:center;">
-                <img id="aPropImg" src="" style="width:25px; height:25px; border-radius:4px; margin-right:8px; display:none;">
-                <span id="aPropText">-- เลือกรายการ --</span>
-            </div>
+            <div id="aPropDisplay" style="display:flex; align-items:center;"><img id="aPropImg" src="" style="width:25px; height:25px; border-radius:4px; margin-right:8px; display:none;"><span id="aPropText">-- เลือกรายการ --</span></div>
             <i class="fa-solid fa-chevron-down" style="font-size:12px; color:#999;"></i>
         </div>
         <input type="hidden" id="aPropId">
@@ -133,9 +118,7 @@
     </div>
 
     <div id="historyPage" style="display:none; background: #fff; border-radius: 20px; overflow: hidden;">
-      <div style="padding: 12px; border-bottom: 1.5px solid #f4f4f4; display: flex; justify-content: space-between;">
-        <b>ประวัติการพาชม</b><i class="fa-solid fa-rotate" onclick="loadHistory()" style="color:#999;"></i>
-      </div>
+      <div style="padding: 12px; border-bottom: 1.5px solid #f4f4f4; display: flex; justify-content: space-between;"><b>ประวัติการพาชม</b><i class="fa-solid fa-rotate" onclick="loadHistory()" style="color:#999;"></i></div>
       <div id="historyList"></div>
       <div style="padding: 12px;"><button class="menu-btn" onclick="switchPage('visitPage')">กลับ</button></div>
     </div>
@@ -178,7 +161,7 @@
       const res = await fetch(`${API_URL}?action=login&phone=${ph}&password=${ps}`).then(r => r.json());
       Swal.close();
       if (res?.success) { localStorage.setItem('agent_phone', ph); localStorage.setItem('agent_pass', ps); globalProfile = res.profile; showVisitPage(); }
-      else Swal.fire('Error', 'ข้อมูลไม่ถูกต้อง', 'error');
+      else Swal.fire('Error', 'เบอร์หรือรหัสผ่านผิด', 'error');
     }
 
     async function handleRegister() {
@@ -271,10 +254,8 @@
 
     function togglePass(id) { const x = document.getElementById(id); x.type = x.type === "password" ? "text" : "password"; }
     function previewImg(i, id) { if (i.files && i.files[0]) { const r = new FileReader(); r.onload = (e) => { document.getElementById(id).src = e.target.result; if (id === 'vImg1') img1Base64 = e.target.result; else img2Base64 = e.target.result; }; r.readAsDataURL(i.files[0]); } }
-    function getLocation() { if (navigator.geolocation) { navigator.geolocation.getCurrentPosition((pos) => { locationLink = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`; Swal.fire('สำเร็จ', 'พิกัดพร้อม', 'success'); }); } }
+    function getLocation() { if (navigator.geolocation) { navigator.geolocation.getCurrentPosition((pos) => { locationLink = `http://googleusercontent.com/maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`; document.getElementById('locStatus').style.display='block'; Swal.fire('สำเร็จ', 'พิกัดพร้อมบันทึก', 'success'); }); } }
     function handleLogout() { localStorage.clear(); location.reload(); }
-    async function openProperties(cat) { switchPage('propertiesPage'); if(allHouses.length === 0) { Swal.showLoading(); allHouses = await fetch(`${API_URL}?action=getProperties&role=${globalProfile?.role || 'customer'}&lang=th`).then(r => r.json()); Swal.close(); } renderList(cat); }
-    function renderList(cat) { const list = document.getElementById('propertiesList'); list.innerHTML = ''; allHouses.filter(h => cat === 'home' || h[cat] === "Y").forEach(h => { list.innerHTML += `<div class="house-card" style="display:flex; background:#fff; margin-bottom:10px; border-radius:12px; padding:10px;"><img src="${h.img}" style="width:70px;height:70px;border-radius:8px;object-fit:cover;"><div style="padding-left:10px;"><b>${h.id}</b><br><span style="color:red">฿ ${h.price}</span></div></div>`; }); }
   </script>
 </body>
 </html>
