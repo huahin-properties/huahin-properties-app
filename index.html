@@ -2,45 +2,48 @@
 <html>
 <head>
   <base target="_top"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
-    :root { --primary-green: #24d366; --bg-Appro: #e8f5e9; --txt-Appro: #2e7d32; --bg-Pending: #fff3e0; --txt-Pending: #e65100; --bg-Rejected: #ffebee; --txt-Rejected: #c62828; }
+    :root { 
+      --primary-green: #24d366; 
+      --app-price-green: #2e7d32; /* สีเขียวสำหรับราคา */
+      --bg-Appro: #e8f5e9; --txt-Appro: #2e7d32;
+      --bg-Pending: #fff3e0; --txt-Pending: #e65100;
+      --bg-Rejected: #ffebee; --txt-Rejected: #c62828;
+    }
     body { font-family: 'Kanit', sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; font-weight: 300; }
-    
-    /* ปรับหัวข้อให้ตัวบางลง */
     .header { background-color: var(--primary-green); color: white; padding: 12px 15px 25px; text-align: center; border-radius: 0 0 25px 25px; }
     .header h1 { font-size: 14px; margin: 0; letter-spacing: 1px; font-weight: 400; }
-
     .container { padding: 12px; max-width: 450px; margin: 0 auto 80px; }
     .card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 15px; }
     
+    .login-logo { width: 75px; height: 75px; border-radius: 50%; object-fit: cover; margin: 0 auto 12px; display: block; border: 2.5px solid var(--primary-green); }
     .input-group { margin-bottom: 10px; text-align: left; }
     .input-group label { display: block; margin-bottom: 4px; font-weight: 400; font-size: 13px; }
     .input-group input, .input-group textarea, .input-group select { width: 100%; padding: 12px; border: 1.5px solid #eee; border-radius: 12px; box-sizing: border-box; font-family: 'Kanit'; font-size: 15px; background: #fafafa; outline: none; font-weight: 300; }
     
     .menu-btn { width: 100%; padding: 14px; background: var(--primary-green); color: white; border: none; border-radius: 50px; font-weight: 400; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; font-size: 15px; }
     
-    /* รายการแบบ Compact สไตล์ 2 บรรทัด ตัวบาง */
+    /* รายการแบบกะทัดรัด (Compact List) */
     .compact-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #fff; border-bottom: 1px solid #f2f2f2; }
-    .compact-thumb { width: 40px; height: 40px; border-radius: 6px; object-fit: cover; margin-right: 10px; border: 1px solid #eee; }
-    .compact-info b { font-size: 12px; color: #333; display: block; font-weight: 400; } /* รหัสทรัพย์ตัวบางลงแต่ยังเป็น 400 */
-    .compact-info small { font-size: 11px; color: #666; font-weight: 300; }
+    .compact-thumb { width: 45px; height: 45px; border-radius: 8px; object-fit: cover; margin-right: 12px; border: 1px solid #eee; }
+    .compact-info b { font-size: 13px; color: #333; display: block; font-weight: 400; }
+    .compact-info small { font-size: 11px; color: #888; font-weight: 300; display: block; line-height: 1.4; }
     .compact-right { text-align: right; }
+    .price-green { color: var(--app-price-green); font-weight: 400; font-size: 13px; } /* สีเขียวสำหรับราคาตามสั่ง */
 
     .status-pill { font-size: 9px; padding: 1px 6px; border-radius: 50px; font-weight: 400; display: inline-block; }
     .pill-Appro { background: var(--bg-Appro); color: var(--txt-Appro); }
     .pill-Pending { background: var(--bg-Pending); color: var(--txt-Pending); }
     .pill-Rejected { background: var(--bg-Rejected); color: var(--txt-Rejected); }
 
-    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; display: flex; border-top: 1px solid #eee; z-index: 1000; }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; display: flex; border-top: 1px solid #eee; z-index: 1000; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
     .nav-item { flex: 1; padding: 8px 0; text-align: center; font-size: 9px; color: #999; cursor: pointer; }
     .nav-item.active { color: var(--primary-green); font-weight: 400; }
+    .nav-item i { font-size: 18px; margin-bottom: 2px; display: block; }
     .img-preview { width: 70px; height: 70px; border-radius: 10px; border: 2px dashed #ccc; object-fit: cover; cursor: pointer; }
-    .login-logo { width: 75px; height: 75px; border-radius: 50%; object-fit: cover; margin: 0 auto 12px; display: block; border: 2px solid var(--primary-green); }
-    .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
-    .modal-content { background: #fff; margin: 15% auto; padding: 15px; width: 85%; border-radius: 20px; max-height: 70vh; overflow-y: auto; }
   </style>
 </head>
 <body onload="initApp()">
@@ -48,29 +51,13 @@
   <div class="header"><h1>HUAHIN.PROPERTIES</h1></div>
 
   <div class="container">
-    <div id="loginPage" class="card" style="display:none; text-align:center;">
-      <img src="https://img5.pic.in.th/file/secure-sv1/222892.jpg" class="login-logo">
-      <h3 style="margin-top:0; font-size: 18px; font-weight:400;">Agent Login</h3>
-      <div class="input-group"><label>เบอร์โทรศัพท์</label><input type="tel" id="lPhone" placeholder="08x-xxxxxxx"></div>
-      <div class="input-group"><label>รหัสผ่าน</label><input type="password" id="lPass" placeholder="******"></div>
-      <button class="menu-btn" onclick="handleLogin()">Login</button>
-      <div style="margin-top:15px; font-size:14px;">ยังไม่มีบัญชี? <span onclick="switchPage('registerPage')" style="color:var(--primary-green); cursor:pointer;">สมัครสมาชิก</span></div>
-    </div>
-
-    <div id="registerPage" class="card" style="display:none;">
-      <h3 style="margin-top:0; font-size: 18px; font-weight:400;">ลงทะเบียนเอเจนต์</h3>
-      <div class="input-group"><label>ชื่อ-นามสกุล</label><input type="text" id="rName"></div>
-      <div class="input-group"><label>เบอร์โทรศัพท์</label><input type="tel" id="rPhone"></div>
-      <div class="input-group"><label>รหัสผ่าน</label><input type="password" id="rPass" placeholder="******"></div>
-      <button class="menu-btn" onclick="handleRegister()">ลงทะเบียน</button>
-      <div onclick="switchPage('loginPage')" style="text-align:center; font-size:14px; margin-top:10px; cursor:pointer;">มีบัญชีแล้ว? เข้าสู่ระบบ</div>
-    </div>
+    <div id="loginPage" class="card" style="display:none; text-align:center;"><img src="https://img5.pic.in.th/file/secure-sv1/222892.jpg" class="login-logo"><h3 style="margin-top:0; font-size: 18px; font-weight:400;">Agent Login</h3><div class="input-group"><label>เบอร์โทรศัพท์</label><input type="tel" id="lPhone" placeholder="08x-xxxxxxx"></div><div class="input-group"><label>รหัสผ่าน</label><input type="password" id="lPass" placeholder="******"></div><button class="menu-btn" onclick="handleLogin()">Login</button><div style="margin-top:15px; font-size:14px;">ยังไม่มีบัญชี? <span onclick="switchPage('registerPage')" style="color:var(--primary-green); font-weight:600; cursor:pointer;">สมัครสมาชิก</span></div></div>
 
     <div id="visitPage" style="display:none;">
       <div class="card" style="padding: 10px; margin-bottom: 12px;"><div style="display:flex; align-items:center; gap:10px;"><img id="vAgentImg" src="" style="width:45px; height:45px; border-radius:50%; border:2px solid var(--primary-green);"><div style="text-align:left"><div style="font-weight:400; font-size:13px;"><span id="vDispName"></span> <small id="vDispRole" style="color:#888;"></small></div><div style="font-size:11px; color:#666;">ID: <span id="vDispId"></span> <span id="vStatusPill" class="status-pill"></span></div></div></div></div>
       <div id="checkinForm" class="card">
         <h3 style="margin-top:0; font-size: 16px; font-weight:400;"><i class="fa-solid fa-file-signature"></i> บันทึกพาชมบ้าน</h3>
-        <div class="input-group"><label>Property ID (โครงการหลัก)</label><div class="prop-picker-btn" onclick="openPropPicker('vProp')"><div id="vPropDisplay" style="display:flex; align-items:center;"><img id="vPropImg" src="" style="width:25px; height:25px; border-radius:4px; margin-right:8px; display:none;"><span id="vPropText">-- เลือกรายการ --</span></div><i class="fa-solid fa-chevron-down" style="font-size:12px; color:#999;"></i></div><input type="hidden" id="vPropId"></div>
+        <div class="input-group"><label>Property ID</label><select id="vPropId"><option value="">โหลดรหัส...</option></select></div>
         <div class="input-group"><label>ยูนิต / หลังอื่นๆ</label><input type="text" id="vSubPropId" placeholder="เช่น HH0001,M14..."></div>
         <div class="input-group"><label>ชื่อลูกค้า</label><input type="text" id="vClientName"></div>
         <div class="input-group"><label>แนบรูปถ่าย (2 รูป)</label><div style="display:flex; gap:10px; justify-content:center;"><img id="vImg1" src="https://placehold.co/70?text=1" class="img-preview" onclick="document.getElementById('file1').click()"><img id="vImg2" src="https://placehold.co/70?text=2" class="img-preview" onclick="document.getElementById('file2').click()"><input type="file" id="file1" style="display:none" onchange="previewImg(this, 'vImg1')"><input type="file" id="file2" style="display:none" onchange="previewImg(this, 'vImg2')"></div></div>
@@ -79,42 +66,23 @@
         <button class="menu-btn" onclick="handleRecordVisit()">ยืนยันข้อมูล</button>
         <button class="menu-btn" onclick="switchPage('historyPage')" style="background:#666; font-size: 12px;">ดูประวัติงาน</button>
       </div>
-      <div id="lockMessage" class="card" style="display:none; text-align:center;"><i class="fa-solid fa-lock" style="font-size:40px; color:#e65100; margin-bottom:10px;"></i><h3 style="font-size: 16px; font-weight:400;">บัญชีรอการอนุมัติ</h3></div>
     </div>
 
-    <div id="appointPage" class="card" style="display:none;">
-      <h3 style="margin-top:0; font-size: 18px; font-weight:400;"><i class="fa-solid fa-calendar-check"></i> นัดดูบ้าน</h3>
-      <div class="input-group"><label>Property ID (โครงการหลัก)</label><div class="prop-picker-btn" onclick="openPropPicker('aProp')"><div id="aPropDisplay" style="display:flex; align-items:center;"><img id="aPropImg" src="" style="width:25px; height:25px; border-radius:4px; margin-right:8px; display:none;"><span id="aPropText">-- เลือกรายการ --</span></div><i class="fa-solid fa-chevron-down" style="font-size:12px; color:#999;"></i></div><input type="hidden" id="aPropId"></div>
-      <div class="input-group"><label>ยูนิต / หลังอื่นๆ</label><input type="text" id="aSubPropId" placeholder="เช่น HH0001,M14..."></div>
-      <div class="input-group"><label>ชื่อลูกค้า</label><input type="text" id="aClientName"></div>
-      <div class="input-group"><label>วัน-เวลา</label><input type="datetime-local" id="aDate"></div>
-      <div class="input-group"><label>บันทึก (Note)</label><textarea id="aNotes" rows="2"></textarea></div>
-      <button class="menu-btn" onclick="handleAddAppoint()">บันทึกนัดหมาย</button>
-    </div>
+    <div id="appointPage" class="card" style="display:none;"><h3 style="margin-top:0; font-size: 18px; font-weight:400;"><i class="fa-solid fa-calendar-check"></i> นัดดูบ้าน</h3><div class="input-group"><label>Property ID</label><select id="aPropId"><option value="">โหลดรหัส...</option></select></div><div class="input-group"><label>ยูนิต / หลังอื่นๆ</label><input type="text" id="aSubPropId" placeholder="เช่น HH0001,M14..."></div><div class="input-group"><label>ชื่อลูกค้า</label><input type="text" id="aClientName"></div><div class="input-group"><label>วัน-เวลา</label><input type="datetime-local" id="aDate"></div><div class="input-group"><label>บันทึก (Note)</label><textarea id="aNotes" rows="2"></textarea></div><button class="menu-btn" onclick="handleAddAppoint()">บันทึกนัดหมาย</button></div>
 
     <div id="propertiesPage" style="display:none; background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
       <div style="padding: 12px; border-bottom: 1.5px solid #f4f4f4;"><b style="font-size: 14px; font-weight:400;">🏠 รายการพรอพเพอร์ตี้ (Stock)</b></div>
       <div id="propertiesList"></div>
     </div>
 
-    <div id="historyPage" style="display:none; background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-      <div style="padding: 12px; border-bottom: 1.5px solid #f4f4f4; display: flex; justify-content: space-between;"><b>ประวัติการพาชม</b><i class="fa-solid fa-rotate" onclick="loadHistory()" style="color:#999; cursor:pointer;"></i></div>
-      <div id="historyList"></div><div style="padding: 12px;"><button class="menu-btn" onclick="switchPage('visitPage')">กลับ</button></div>
-    </div>
-
-    <div id="propPickerModal" class="modal"><div class="modal-content"><h4 style="margin-top:0; font-weight:400;">เลือกพรอพเพอร์ตี้</h4><div id="propPickerList"></div><button class="menu-btn" style="background:#999; margin-top:15px;" onclick="closePropPicker()">ยกเลิก</button></div></div>
+    <div id="historyPage" style="display:none; background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);"><div style="padding: 12px; border-bottom: 1.5px solid #f4f4f4; display: flex; justify-content: space-between;"><b>ประวัติการพาชม</b><i class="fa-solid fa-rotate" onclick="loadHistory()" style="color:#999; cursor:pointer;"></i></div><div id="historyList"></div><div style="padding: 12px;"><button class="menu-btn" onclick="switchPage('visitPage')">กลับ</button></div></div>
   </div>
 
-  <div id="bottomNav" class="bottom-nav" style="display:none;">
-    <div class="nav-item" id="btnStock" onclick="openProperties()"><i class="fa-solid fa-house"></i><div>สต็อก</div></div>
-    <div class="nav-item" id="btnAppoint" onclick="switchPage('appointPage')"><i class="fa-solid fa-calendar-check"></i><div>นัดหมาย</div></div>
-    <div class="nav-item active" id="btnCheckin" onclick="showVisitPage()"><i class="fa-solid fa-file-signature"></i><div>เช็คอิน</div></div>
-    <div class="nav-item" id="btnLogout" onclick="handleLogout()"><i class="fa-solid fa-sign-out-alt"></i><div>ออก</div></div>
-  </div>
+  <div id="bottomNav" class="bottom-nav" style="display:none;"><div class="nav-item" id="btnStock" onclick="openProperties()"><i class="fa-solid fa-house"></i><div>สต็อก</div></div><div class="nav-item" id="btnAppoint" onclick="switchPage('appointPage')"><i class="fa-solid fa-calendar-check"></i><div>นัดหมาย</div></div><div class="nav-item active" id="btnCheckin" onclick="showVisitPage()"><i class="fa-solid fa-file-signature"></i><div>เช็คอิน</div></div><div class="nav-item" id="btnLogout" onclick="handleLogout()"><i class="fa-solid fa-sign-out-alt"></i><div>ออก</div></div></div>
 
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbyLB6o3Nqm8QtYSkneLHDva0T8hxkLHVl5iu1EM2IrswK8uyPkGQ4VlvP77nXHIBMB7KA/exec"; 
-    let globalProfile = null, img1Base64 = "", img2Base64 = "", locationLink = "", propertyList = [], currentTarget = '', allHouses = [];
+    let globalProfile = null, img1Base64 = "", img2Base64 = "", locationLink = "", allHouses = [];
 
     async function initApp() {
       const ph = localStorage.getItem('agent_phone'), ps = localStorage.getItem('agent_pass');
@@ -135,7 +103,7 @@
       else if(id === 'visitPage' || id === 'historyPage') document.getElementById('btnCheckin').classList.add('active');
     }
 
-    // ฟังก์ชันแสดงหน้าสต็อกแบบ Compact พร้อมแก้ปัญหา NaN
+    // ฟังก์ชันแสดงสต็อกพร้อมแก้ปัญหา NaN และปรับตัวอักษร
     async function openProperties() {
       switchPage('propertiesPage');
       const list = document.getElementById('propertiesList');
@@ -145,7 +113,7 @@
           allHouses = res.data;
       }
       list.innerHTML = allHouses.map(h => {
-        // แก้ไขปัญหา NaN: ล้างตัวอักษรที่ไม่ใช่ตัวเลขออกก่อนแปลงค่า
+        // แก้ไขปัญหา NaN
         let rawPrice = h.price ? h.price.toString().replace(/[^0-9.]/g, '') : '0';
         let displayPrice = rawPrice ? Number(rawPrice).toLocaleString() : '0';
 
@@ -154,12 +122,13 @@
           <div style="display:flex; align-items:center;">
             <img class="compact-thumb" src="${h.img || 'https://placehold.co/100?text=No+Img'}">
             <div class="compact-info">
-              <b>${h.id}</b>
-              <small>${h.title.substring(0, 30)}${h.title.length>30?'...':''}</small>
+              <b>${h.id} <span style="font-weight:300; font-size:11px;">[${h.type}]</span></b>
+              <small>${h.for} | 🛏️ ${h.bed} | 🚿 ${h.bath}</small>
             </div>
           </div>
           <div class="compact-right">
-            <span style="color:#c62828; font-weight:400; font-size:13px;">฿ ${displayPrice}</span>
+            <span class="price-green">฿ ${displayPrice}</span><br>
+            <span class="status-pill pill-Appro" style="font-size:8px;">${h.status}</span>
           </div>
         </div>`;
       }).join('');
@@ -178,13 +147,8 @@
     async function handleRegister() { const data = { action: "register", name: document.getElementById('rName').value, phone: document.getElementById('rPhone').value, password: document.getElementById('rPass').value }; Swal.showLoading(); const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(data) }).then(r => r.json()); Swal.close(); if(res.success) Swal.fire('สำเร็จ', 'สมัครแล้ว รอแอดมินอนุมัติ', 'success').then(() => switchPage('loginPage')); }
     async function handleRecordVisit() { const data = { action: "recordVisit", agentId: globalProfile.agentId, agentName: globalProfile.name, agentPhone: localStorage.getItem('agent_phone'), propertyId: document.getElementById('vPropId').value, subPropertyId: document.getElementById('vSubPropId').value, clientName: document.getElementById('vClientName').value, notes: document.getElementById('vNotes').value, image1: img1Base64, image2: img2Base64, locationLink: locationLink }; if (!data.propertyId || !data.clientName) return Swal.fire('เตือน', 'ระบุโครงการและลูกค้า', 'warning'); Swal.showLoading(); const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(data) }).then(r => r.json()); Swal.close(); if (res.success) Swal.fire('สำเร็จ', 'บันทึกเรียบร้อย', 'success').then(() => location.reload()); }
     async function handleAddAppoint() { const data = { action: "addAppoint", agentId: globalProfile.agentId, agentName: globalProfile.name, propertyId: document.getElementById('aPropId').value, subPropertyId: document.getElementById('aSubPropId').value, clientName: document.getElementById('aClientName').value, date: document.getElementById('aDate').value, notes: document.getElementById('aNotes').value }; if(!data.propertyId || !data.date) return Swal.fire('เตือน', 'กรอกข้อมูลให้ครบ', 'warning'); Swal.showLoading(); const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(data) }).then(r => r.json()); Swal.close(); if(res.success) Swal.fire('สำเร็จ', 'บันทึกนัดหมายแล้ว', 'success').then(() => showVisitPage()); }
-    
-    function showVisitPage() { const p = globalProfile; document.getElementById('vDispName').innerText = p.name; document.getElementById('vDispId').innerText = p.agentId; document.getElementById('vAgentImg').src = p.imgUrl || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"; document.getElementById('vDispRole').innerText = `[${p.roleDisplay}]`; const b = document.getElementById('vStatusPill'); b.innerText = p.status; if (p.status.toLowerCase().includes('appro') || p.roleDisplay === 'Admin') { b.className = "status-pill pill-Appro"; document.getElementById('checkinForm').style.display = 'block'; document.getElementById('lockMessage').style.display = 'none'; } else { b.className = "status-pill pill-Pending"; document.getElementById('checkinForm').style.display = 'none'; document.getElementById('lockMessage').style.display = 'block'; } switchPage('visitPage'); }
-    function openPropPicker(t) { currentTarget = t; if(propertyList.length === 0) { fetch(`${API_URL}?action=getPropertyListData`).then(r => r.json()).then(res => { propertyList = res.data; showPicker(); }); } else showPicker(); }
-    function showPicker() { const list = document.getElementById('propPickerList'); list.innerHTML = propertyList.map(p => `<div class="prop-item" onclick="selectProperty('${p.id}', '${p.img}')"><img src="${p.img}"><b>${p.id}</b></div>`).join(''); document.getElementById('propPickerModal').style.display = 'block'; }
-    function selectProperty(id, img) { document.getElementById(currentTarget + 'Id').value = id; document.getElementById(currentTarget + 'Text').innerText = id; const imgEl = document.getElementById(currentTarget + 'Img'); imgEl.src = img; imgEl.style.display = 'block'; closePropPicker(); }
-    function closePropPicker() { document.getElementById('propPickerModal').style.display = 'none'; }
-    function previewImg(i, id) { if (i.files && i.files[0]) { const r = new FileReader(); r.onload = (e) => { document.getElementById(id).src = e.target.result; if (id === 'vImg1') img1Base64 = e.target.result; else img2Base64 = e.target.result; }; r.readAsDataURL(i.files[0]); } }
+    function showVisitPage() { const p = globalProfile; document.getElementById('vDispName').innerText = p.name; document.getElementById('vDispId').innerText = p.agentId; document.getElementById('vAgentImg').src = p.imgUrl || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"; document.getElementById('vDispRole').innerText = `[${p.roleDisplay}]`; const b = document.getElementById('vStatusPill'); b.innerText = p.status; if (p.status.toLowerCase().includes('appro') || p.roleDisplay === 'Admin') { b.className = "status-pill pill-Appro"; document.getElementById('checkinForm').style.display = 'block'; } else { b.className = "status-pill pill-Pending"; document.getElementById('checkinForm').style.display = 'none'; } switchPage('visitPage'); if(propertyIds.length === 0) fetch(`${API_URL}?action=getPropertyListData`).then(r=>r.json()).then(res => { propertyIds = res.data; const opt = '<option value="">-- เลือก --</option>' + propertyIds.map(p=>`<option value="${p.id}">${p.id}</option>`).join(''); document.getElementById('vPropId').innerHTML = opt; document.getElementById('aPropId').innerHTML = opt; }); }
+    let propertyIds = []; function previewImg(i, id) { if (i.files && i.files[0]) { const r = new FileReader(); r.onload = (e) => { document.getElementById(id).src = e.target.result; if (id === 'vImg1') img1Base64 = e.target.result; else img2Base64 = e.target.result; }; r.readAsDataURL(i.files[0]); } }
     function getLocation() { if (navigator.geolocation) { navigator.geolocation.getCurrentPosition((pos) => { locationLink = `http://googleusercontent.com/maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`; Swal.fire('สำเร็จ', 'บันทึกพิกัดแล้ว', 'success'); }); } }
     function handleLogout() { localStorage.clear(); location.reload(); }
   </script>
