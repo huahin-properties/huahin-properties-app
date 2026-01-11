@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
-    :root { --primary-green: #24d366; --bg-sale: #e8f5e9; --txt-sale: #2e7d32; --bg-rent: #ffebee; --txt-rent: #c62828; --bg-both: #e3f2fd; --txt-both: #1565c0; }
+    :root { --primary-green: #24d366; --bg-sale: #e8f5e9; --txt-sale: #2e7d32; --bg-rent: #ffebee; --txt-rent: #c62828; --bg-both: #e3f2fd; --txt-both: #1565c0; --bg-Available: #e8f5e9; --txt-Available: #2e7d32; }
     body { font-family: 'Kanit', sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; font-weight: 300; }
     .header-filter { background-color: var(--primary-green); padding: 8px 10px 10px; border-radius: 0 0 15px 15px; position: sticky; top: 0; z-index: 1100; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
     .search-row { display: flex; gap: 5px; margin-bottom: 5px; }
@@ -16,7 +16,7 @@
     .filter-select { flex: 1; border: none; border-radius: 8px; font-size: 11px; padding: 0 5px; height: 32px; outline: none; background: rgba(255,255,255,0.95); }
     .container { padding: 6px; max-width: 450px; margin: 0 auto 75px; }
     .card { background: white; padding: 12px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 8px; }
-    /* สไตล์ 3 แถว */
+    /* รายการ 3 แถวแบบมืออาชีพ */
     .compact-item { display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; background: #fff; border-bottom: 1px solid #f0f0f0; }
     .compact-thumb { width: 45px; height: 45px; border-radius: 6px; object-fit: cover; margin-right: 10px; border: 1px solid #eee; }
     .compact-info b { font-size: 12px; color: #333; display: block; font-weight: 400; line-height: 1.1; }
@@ -44,14 +44,32 @@
 
   <div class="container">
     <div id="propertiesPage" style="display:none;"><div id="propertiesList"></div></div>
-    <div id="appointPage" class="card" style="display:none;"><h3 style="margin:0 0 10px; font-size:14px; font-weight:400;"><i class="fa-solid fa-calendar-check"></i> นัดดูบ้าน</h3><div style="border:1.2px solid #eee; padding:8px; border-radius:8px; cursor:pointer;" onclick="openPropPicker('aProp')"><span id="aPropText">-- เลือกบ้าน --</span></div><input type="hidden" id="aPropId"><div class="input-group" style="margin-top:10px;"><label>ชื่อลูกค้า</label><input type="text" id="aClientName"></div><div class="input-group"><label>วัน-เวลา</label><input type="datetime-local" id="aDate"></div><div class="input-group"><label>บันทึก (Note)</label><textarea id="aNotes" rows="1"></textarea></div><button class="menu-btn" onclick="handleAddAppoint()">บันทึกนัดหมาย</button></div>
-    <div id="loginPage" class="card" style="display:none; text-align:center;"><img src="https://img5.pic.in.th/file/secure-sv1/222892.jpg" style="width:60px; height:60px; border-radius:50%; border:2px solid var(--primary-green);"><h3>Agent Login</h3><div class="input-group"><label>เบอร์โทรศัพท์</label><input type="tel" id="lPhone" placeholder="08x-xxxxxxx"></div><div class="input-group"><label>รหัสผ่าน</label><input type="password" id="lPass" placeholder="******"></div><button class="menu-btn" onclick="handleLogin()">Login</button></div>
+    
+    <div id="appointPage" class="card" style="display:none;">
+      <h3 style="margin:0 0 10px; font-size:14px; font-weight:400;"><i class="fa-solid fa-calendar-check"></i> นัดดูบ้าน</h3>
+      <div style="border:1.2px solid #eee; padding:8px; border-radius:8px; cursor:pointer;" onclick="openPropPicker('aProp')"><span id="aPropText">-- เลือกบ้าน --</span></div>
+      <input type="hidden" id="aPropId">
+      <input type="text" id="aClientName" placeholder="ชื่อลูกค้า" style="width:100%; padding:8px; margin-top:10px; border-radius:8px; border:1.2px solid #eee; font-family: Kanit;">
+      <input type="datetime-local" id="aDate" style="width:100%; padding:8px; margin-top:10px; border-radius:8px; border:1.2px solid #eee; font-family: Kanit;">
+      <textarea id="aNotes" placeholder="Note" style="width:100%; padding:8px; margin-top:10px; border-radius:8px; border:1.2px solid #eee; font-family: Kanit;"></textarea>
+      <button class="menu-btn" onclick="handleAddAppoint()">บันทึกนัดหมาย</button>
+    </div>
+
+    <div id="loginPage" class="card" style="display:none; text-align:center;">
+      <img src="https://img5.pic.in.th/file/secure-sv1/222892.jpg" style="width:60px; height:60px; border-radius:50%; border:2px solid var(--primary-green);">
+      <h3 style="margin:10px 0; font-size: 16px;">Agent Login</h3>
+      <input type="tel" id="lPhone" placeholder="เบอร์โทรศัพท์" style="width:100%; padding:8px; border-radius:8px; border:1.2px solid #eee; font-family: Kanit;">
+      <input type="password" id="lPass" placeholder="******" style="width:100%; padding:8px; margin-top:10px; border-radius:8px; border:1.2px solid #eee;">
+      <button class="menu-btn" onclick="handleLogin()">Login</button>
+    </div>
+
     <div id="propPickerModal" class="modal"><div class="modal-content"><h4>เลือกพรอพเพอร์ตี้</h4><div id="propPickerList"></div><button onclick="closePropPicker()" style="width:100%; padding:10px; background:#999; color:white; border:none; border-radius:50px; margin-top:10px;">ยกเลิก</button></div></div>
   </div>
 
   <div id="bottomNav" class="bottom-nav" style="display:none;"><div class="nav-item" id="btnStock" onclick="openProperties()"><i class="fa-solid fa-house"></i><div>สต็อก</div></div><div class="nav-item" id="btnAppoint" onclick="switchPage('appointPage')"><i class="fa-solid fa-calendar-check"></i><div>นัดหมาย</div></div><div class="nav-item active" id="btnCheckin" onclick="switchPage('propertiesPage')"><i class="fa-solid fa-file-signature"></i><div>เช็คอิน</div></div><div class="nav-item" id="btnLogout" onclick="handleLogout()"><i class="fa-solid fa-sign-out-alt"></i><div>ออก</div></div></div>
 
   <script>
+    // ฝังลิงก์ API ที่คุณส่งมาให้ล่าสุด
     const API_URL = "https://script.google.com/macros/s/AKfycbxw-AFboZUrCih6wRoBOabDn3ioCUfs1ltyyfFSdhZFkvyft68HWMxcRmYe2vmBmFlllQ/exec"; 
     let globalProfile = null, allHouses = [], currentTarget = '';
 
@@ -88,9 +106,9 @@
     }
 
     async function openProperties() { switchPage('propertiesPage'); if(allHouses.length === 0) { document.getElementById('propertiesList').innerHTML = '<div style="text-align:center; padding:15px; font-size:10px;">โหลดสต็อก...</div>'; const res = await fetch(`${API_URL}?action=getProperties`).then(r => r.json()); allHouses = res.data; } applyFilters(); }
-    async function handleAddAppoint() { const d = { action: "addAppoint", agentId: globalProfile.agentId, agentName: globalProfile.name, propertyId: document.getElementById('aPropId').value, subPropertyId: "", clientName: document.getElementById('aClientName').value, date: document.getElementById('aDate').value, notes: document.getElementById('aNotes').value }; if(!d.propertyId || !d.date) return Swal.fire('เตือน', 'ระบุข้อมูลให้ครบ', 'warning'); Swal.showLoading(); const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(d) }).then(r => r.json()); Swal.close(); if(res.success) Swal.fire('สำเร็จ', 'นัดหมายแล้ว', 'success').then(() => openProperties()); }
+    async function handleAddAppoint() { const d = { action: "addAppoint", agentId: globalProfile.agentId, agentName: globalProfile.name, propertyId: document.getElementById('aPropId').value, subPropertyId: "", clientName: document.getElementById('aClientName').value, date: document.getElementById('aDate').value, notes: document.getElementById('aNotes').value }; if(!d.propertyId || !d.date) return Swal.fire('เตือน', 'ข้อมูลไม่ครบ', 'warning'); Swal.showLoading(); const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(d) }).then(r => r.json()); Swal.close(); if(res.success) Swal.fire('สำเร็จ', 'นัดหมายแล้ว', 'success').then(() => openProperties()); }
     function switchPage(id) { ['loginPage', 'propertiesPage', 'appointPage'].forEach(p => { const el = document.getElementById(p); if(el) el.style.display = 'none'; }); const t = document.getElementById(id); if(t) t.style.display = 'block'; document.getElementById('filterHeader').style.display = (id === 'propertiesPage') ? 'block' : 'none'; document.getElementById('bottomNav').style.display = (id === 'loginPage') ? 'none' : 'flex'; document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); if(id === 'propertiesPage') document.getElementById('btnStock').classList.add('active'); else if(id === 'appointPage') document.getElementById('btnAppoint').classList.add('active'); }
-    async function handleLogin() { const ph = document.getElementById('lPhone').value, ps = document.getElementById('lPass').value; Swal.showLoading(); const res = await fetch(`${API_URL}?action=login&phone=${ph}&password=${ps}`).then(r => r.json()); Swal.close(); if (res?.success) { localStorage.setItem('agent_phone', ph); localStorage.setItem('agent_pass', ps); globalProfile = res.profile; openProperties(); } else Swal.fire('Error', 'ไม่ถูกต้อง', 'error'); }
+    async function handleLogin() { const ph = document.getElementById('lPhone').value, ps = document.getElementById('lPass').value; Swal.showLoading(); const res = await fetch(`${API_URL}?action=login&phone=${ph}&password=${ps}`).then(r => r.json()); Swal.close(); if (res?.success) { localStorage.setItem('agent_phone', ph); localStorage.setItem('agent_pass', ps); globalProfile = res.profile; openProperties(); } else Swal.fire('Error', 'เบอร์หรือรหัสผ่านไม่ถูกต้อง', 'error'); }
     function openPropPicker(t) { currentTarget = t; if(allHouses.length === 0) { fetch(`${API_URL}?action=getProperties`).then(r => r.json()).then(res => { allHouses = res.data; showPicker(); }); } else showPicker(); }
     function showPicker() { const list = document.getElementById('propPickerList'); list.innerHTML = allHouses.map(p => `<div class="prop-item" onclick="selectProperty('${p.id}')"><img src="${p.img}"><b>${p.id}</b></div>`).join(''); document.getElementById('propPickerModal').style.display = 'block'; }
     function selectProperty(id) { document.getElementById(currentTarget + 'Id').value = id; document.getElementById(currentTarget + 'Text').innerText = id; closePropPicker(); }
