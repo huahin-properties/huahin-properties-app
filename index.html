@@ -10,16 +10,16 @@
     body { font-family: 'Kanit', sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; font-weight: 300; }
     .header-filter { background-color: var(--primary-green); padding: 8px 10px 10px; border-radius: 0 0 15px 15px; position: sticky; top: 0; z-index: 1100; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
     .search-row { display: flex; gap: 5px; margin-bottom: 5px; }
-    .search-input { flex: 1.6; border: none; border-radius: 8px; font-size: 12px; padding: 6px 10px; outline: none; }
-    .all-btn { flex: 0.5; background: #fff; color: var(--primary-green); border: none; border-radius: 8px; font-size: 12px; font-weight: 400; cursor: pointer; }
+    .search-input { flex: 1.6; border: none; border-radius: 8px; font-size: 12px; padding: 6px 10px; outline: none; height: 32px; }
+    .all-btn { flex: 0.5; background: #fff; color: var(--primary-green); border: none; border-radius: 8px; font-size: 12px; cursor: pointer; height: 32px; font-weight: 400; }
     .filter-grid { display: flex; gap: 5px; }
-    .filter-select { flex: 1; border: none; border-radius: 8px; font-size: 11px; padding: 6px 5px; outline: none; background: rgba(255,255,255,0.95); height: 32px; }
+    .filter-select { flex: 1; border: none; border-radius: 8px; font-size: 11px; padding: 0 5px; height: 32px; outline: none; background: rgba(255,255,255,0.95); }
     .container { padding: 6px; max-width: 450px; margin: 0 auto 75px; }
+    .card { background: white; padding: 12px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 8px; }
     .compact-item { display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; background: #fff; border-bottom: 1px solid #f0f0f0; }
     .compact-thumb { width: 45px; height: 45px; border-radius: 6px; object-fit: cover; margin-right: 10px; border: 1px solid #eee; }
     .compact-info b { font-size: 12px; color: #333; display: block; font-weight: 400; line-height: 1.1; }
     .compact-info small { font-size: 10px; color: #888; font-weight: 300; display: block; line-height: 1.3; }
-    /* แถวที่ 3 (Location + Features) */
     .feat-text { color: #aaa; font-size: 9px; font-weight: 300; }
     .price-black { color: #333; font-weight: 400; font-size: 12px; }
     .status-pill { font-size: 7px; padding: 1px 5px; border-radius: 50px; font-weight: 400; display: inline-block; }
@@ -27,48 +27,68 @@
     .nav-item { flex: 1; padding: 6px 0; text-align: center; font-size: 9px; color: #999; cursor: pointer; }
     .nav-item.active { color: var(--primary-green); font-weight: 400; }
     .nav-item i { font-size: 16px; margin-bottom: 1px; display: block; }
-    .card { background: white; padding: 12px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 8px; }
-    .menu-btn { width: 100%; padding: 10px; background: var(--primary-green); color: white; border: none; border-radius: 50px; font-weight: 400; cursor: pointer; margin-top: 10px; font-size: 14px; }
+    .input-group { margin-bottom: 6px; text-align: left; }
+    .input-group label { display: block; margin-bottom: 2px; font-weight: 400; font-size: 11px; }
+    .input-group input, .input-group textarea { width: 100%; padding: 8px; border: 1.2px solid #eee; border-radius: 8px; box-sizing: border-box; font-family: 'Kanit'; font-size: 14px; background: #fafafa; outline: none; }
+    .menu-btn { width: 100%; padding: 12px; background: var(--primary-green); color: white; border: none; border-radius: 50px; font-weight: 400; cursor: pointer; margin-top: 10px; }
     .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
     .modal-content { background: #fff; margin: 15% auto; padding: 12px; width: 85%; border-radius: 15px; max-height: 60vh; overflow-y: auto; }
     .prop-item { display: flex; align-items: center; padding: 6px; border-bottom: 1px solid #f4f4f4; cursor: pointer; }
-    .prop-item img { width: 35px; height: 35px; border-radius: 5px; margin-right: 12px; }
+    .prop-item img { width: 35px; height: 35px; border-radius: 5px; margin-right: 12px; object-fit: cover; }
   </style>
 </head>
 <body onload="initApp()">
 
   <div id="filterHeader" class="header-filter" style="display:none;">
-    <div class="search-row"><input type="text" id="searchId" class="search-input" placeholder="🔍 รหัสทรัพย์..." oninput="applyFilters()"><button class="all-btn" onclick="clearFilters()">All</button><select id="filterFor" class="filter-select" onchange="applyFilters()"><option value="All">การขาย</option><option value="sale">Sale</option><option value="rent">Rent</option></select></div>
+    <div class="search-row"><input type="text" id="searchId" class="search-input" placeholder="🔍 ค้นหารหัสทรัพย์..." oninput="applyFilters()"><button class="all-btn" onclick="clearFilters()">All</button><select id="filterFor" class="filter-select" onchange="applyFilters()"><option value="All">การขาย</option><option value="sale">Sale</option><option value="rent">Rent</option></select></div>
     <div class="filter-grid"><select id="filterLoc" class="filter-select" onchange="applyFilters()"><option value="All">ทุกอำเภอ</option><option value="Hua Hin">หัวหิน</option><option value="Chaam">ชะอำ</option><option value="Pranburi">ปราณบุรี</option></select><select id="filterBed" class="filter-select" onchange="applyFilters()"><option value="All">ห้องนอน</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></div>
   </div>
 
   <div class="container">
     <div id="propertiesPage" style="display:none;"><div id="propertiesList"></div></div>
+    
     <div id="appointPage" class="card" style="display:none;">
       <h3 style="margin:0 0 10px; font-size:14px; font-weight:400;"><i class="fa-solid fa-calendar-check"></i> นัดดูบ้าน</h3>
       <div style="border:1.2px solid #eee; padding:8px; border-radius:8px; cursor:pointer;" onclick="openPropPicker('aProp')"><span id="aPropText">-- เลือกบ้าน --</span></div>
       <input type="hidden" id="aPropId">
-      <input type="text" id="aClientName" placeholder="ชื่อลูกค้า" style="width:100%; padding:8px; margin-top:10px; border-radius:8px; border:1.2px solid #eee;">
-      <input type="datetime-local" id="aDate" style="width:100%; padding:8px; margin-top:10px; border-radius:8px; border:1.2px solid #eee;">
-      <textarea id="aNotes" placeholder="Note" style="width:100%; padding:8px; margin-top:10px; border-radius:8px; border:1.2px solid #eee;"></textarea>
+      <div class="input-group" style="margin-top:8px;"><label>ชื่อลูกค้า</label><input type="text" id="aClientName"></div>
+      <div class="input-group"><label>วัน-เวลา</label><input type="datetime-local" id="aDate"></div>
+      <div class="input-group"><label>บันทึก (Note)</label><textarea id="aNotes" rows="1"></textarea></div>
       <button class="menu-btn" onclick="handleAddAppoint()">บันทึกนัดหมาย</button>
     </div>
-    <div id="loginPage" class="card" style="display:none; text-align:center;"><img src="https://img5.pic.in.th/file/secure-sv1/222892.jpg" style="width:60px; height:60px; border-radius:50%; margin-bottom:10px; border:2px solid var(--primary-green);"><h3>Agent Login</h3><input type="tel" id="lPhone" placeholder="เบอร์โทรศัพท์" style="width:100%; padding:8px; border-radius:8px; border:1.2px solid #eee;"><input type="password" id="lPass" placeholder="******" style="width:100%; padding:8px; margin-top:10px; border-radius:8px; border:1.2px solid #eee;"><button class="menu-btn" onclick="handleLogin()">Login</button></div>
+
+    <div id="visitPage" class="card" style="display:none;">
+      <h3 style="margin:0 0 10px; font-size:14px; font-weight:400;"><i class="fa-solid fa-file-signature"></i> เช็คอินพาชมบ้าน</h3>
+      <div style="border:1.2px solid #eee; padding:8px; border-radius:8px; cursor:pointer;" onclick="openPropPicker('vProp')"><span id="vPropText">-- เลือกบ้าน --</span></div>
+      <input type="hidden" id="vPropId">
+      <div class="input-group" style="margin-top:8px;"><label>ชื่อลูกค้า</label><input type="text" id="vClientName"></div>
+      <div class="input-group"><label>บันทึก (Note)</label><textarea id="vNotes" rows="1"></textarea></div>
+      <button class="menu-btn" onclick="handleRecordVisit()">ส่งข้อมูลเช็คอิน</button>
+    </div>
+
+    <div id="loginPage" class="card" style="display:none; text-align:center;">
+      <img src="https://img5.pic.in.th/file/secure-sv1/222892.jpg" style="width:60px; height:60px; border-radius:50%; border:2px solid var(--primary-green);">
+      <h3 style="margin:10px 0; font-size: 16px;">Agent Login</h3>
+      <div class="input-group"><label>เบอร์โทรศัพท์</label><input type="tel" id="lPhone" placeholder="08x-xxxxxxx"></div>
+      <div class="input-group"><label>รหัสผ่าน</label><input type="password" id="lPass" placeholder="******"></div>
+      <button class="menu-btn" onclick="handleLogin()">Login</button>
+    </div>
+
+    <div id="historyPage" style="display:none; background:#fff; border-radius:12px; overflow:hidden;"><div id="historyList"></div></div>
     <div id="propPickerModal" class="modal"><div class="modal-content"><h4>เลือกพรอพเพอร์ตี้</h4><div id="propPickerList"></div><button onclick="closePropPicker()" style="width:100%; padding:10px; background:#999; color:white; border:none; border-radius:50px; margin-top:10px;">ยกเลิก</button></div></div>
   </div>
 
   <div id="bottomNav" class="bottom-nav" style="display:none;"><div class="nav-item" id="btnStock" onclick="openProperties()"><i class="fa-solid fa-house"></i><div>สต็อก</div></div><div class="nav-item" id="btnAppoint" onclick="switchPage('appointPage')"><i class="fa-solid fa-calendar-check"></i><div>นัดหมาย</div></div><div class="nav-item active" id="btnCheckin" onclick="showVisitPage()"><i class="fa-solid fa-file-signature"></i><div>เช็คอิน</div></div><div class="nav-item" id="btnLogout" onclick="handleLogout()"><i class="fa-solid fa-sign-out-alt"></i><div>ออก</div></div></div>
 
   <script>
+    // ฝังลิงก์ API ล่าสุดของคุณที่นี่
     const API_URL = "https://script.google.com/macros/s/AKfycbzhhGUEyutMdoW3TWRtKO25XLxBUBJ1WvKaOJ2KxBzwSGaGPPIF3vnhKsrBK18D1VU4CA/exec"; 
     let globalProfile = null, allHouses = [], currentTarget = '';
 
     async function initApp() {
       const ph = localStorage.getItem('agent_phone'), ps = localStorage.getItem('agent_pass');
       if (ph && ps) {
-        Swal.showLoading();
         const res = await fetch(`${API_URL}?action=login&phone=${ph}&password=${ps}`).then(r => r.json());
-        Swal.close();
         if (res?.success) { globalProfile = res.profile; openProperties(); } else switchPage('loginPage');
       } else switchPage('loginPage');
     }
@@ -96,14 +116,32 @@
     }
 
     async function openProperties() { switchPage('propertiesPage'); if(allHouses.length === 0) { document.getElementById('propertiesList').innerHTML = '<div style="text-align:center; padding:15px; font-size:10px;">โหลดสต็อก...</div>'; const res = await fetch(`${API_URL}?action=getProperties`).then(r => r.json()); allHouses = res.data; } applyFilters(); }
-    async function handleAddAppoint() { const d = { action: "addAppoint", agentId: globalProfile.agentId, agentName: globalProfile.name, propertyId: document.getElementById('aPropId').value, subPropertyId: "", clientName: document.getElementById('aClientName').value, date: document.getElementById('aDate').value, notes: document.getElementById('aNotes').value }; if(!d.propertyId || !d.date) return Swal.fire('เตือน', 'เลือกบ้านและระบุวันเวลา', 'warning'); Swal.showLoading(); const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(d) }).then(r => r.json()); Swal.close(); if(res.success) Swal.fire('สำเร็จ', 'นัดหมายแล้ว', 'success').then(() => openProperties()); }
-    function switchPage(id) { ['loginPage', 'propertiesPage', 'appointPage'].forEach(p => { const el = document.getElementById(p); if(el) el.style.display = 'none'; }); const t = document.getElementById(id); if(t) t.style.display = 'block'; document.getElementById('filterHeader').style.display = (id === 'propertiesPage') ? 'block' : 'none'; document.getElementById('bottomNav').style.display = (id === 'loginPage') ? 'none' : 'flex'; document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); if(id === 'propertiesPage') document.getElementById('btnStock').classList.add('active'); else if(id === 'appointPage') document.getElementById('btnAppoint').classList.add('active'); }
-    async function handleLogin() { const ph = document.getElementById('lPhone').value, ps = document.getElementById('lPass').value; Swal.showLoading(); const res = await fetch(`${API_URL}?action=login&phone=${ph}&password=${ps}`).then(r => r.json()); Swal.close(); if (res?.success) { localStorage.setItem('agent_phone', ph); localStorage.setItem('agent_pass', ps); globalProfile = res.profile; openProperties(); } else Swal.fire('Error', 'ไม่ถูกต้อง', 'error'); }
+    
+    async function handleAddAppoint() {
+      const d = { action: "addAppoint", agentId: globalProfile.agentId, agentName: globalProfile.name, propertyId: document.getElementById('aPropId').value, clientName: document.getElementById('aClientName').value, date: document.getElementById('aDate').value, notes: document.getElementById('aNotes').value };
+      if(!d.propertyId || !d.date) return Swal.fire('เตือน', 'ข้อมูลไม่ครบ', 'warning');
+      Swal.showLoading();
+      const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(d) }).then(r => r.json());
+      Swal.close();
+      if(res.success) Swal.fire('สำเร็จ', 'นัดหมายแล้ว', 'success').then(() => openProperties());
+    }
+
+    async function handleRecordVisit() {
+      const d = { action: "recordVisit", agentId: globalProfile.agentId, agentName: globalProfile.name, propertyId: document.getElementById('vPropId').value, clientName: document.getElementById('vClientName').value, notes: document.getElementById('vNotes').value };
+      if(!d.propertyId || !d.clientName) return Swal.fire('เตือน', 'ระบุข้อมูล', 'warning');
+      Swal.showLoading();
+      const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(d) }).then(r => r.json());
+      Swal.close();
+      if(res.success) Swal.fire('สำเร็จ', 'เช็คอินแล้ว', 'success').then(() => openProperties());
+    }
+
+    function switchPage(id) { ['loginPage', 'propertiesPage', 'appointPage', 'visitPage'].forEach(p => { const el = document.getElementById(p); if(el) el.style.display = 'none'; }); const t = document.getElementById(id); if(t) t.style.display = 'block'; document.getElementById('filterHeader').style.display = (id === 'propertiesPage') ? 'block' : 'none'; document.getElementById('bottomNav').style.display = (id === 'loginPage') ? 'none' : 'flex'; document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); if(id === 'propertiesPage') document.getElementById('btnStock').classList.add('active'); else if(id === 'appointPage') document.getElementById('btnAppoint').classList.add('active'); else if(id === 'visitPage') document.getElementById('btnCheckin').classList.add('active'); }
+    async function handleLogin() { const ph = document.getElementById('lPhone').value, ps = document.getElementById('lPass').value; Swal.showLoading(); const res = await fetch(`${API_URL}?action=login&phone=${ph}&password=${ps}`).then(r => r.json()); Swal.close(); if (res?.success) { localStorage.setItem('agent_phone', ph); localStorage.setItem('agent_pass', ps); globalProfile = res.profile; openProperties(); } else Swal.fire('Error', 'เบอร์หรือรหัสผ่านไม่ถูกต้อง', 'error'); }
     function openPropPicker(t) { currentTarget = t; if(allHouses.length === 0) { fetch(`${API_URL}?action=getProperties`).then(r => r.json()).then(res => { allHouses = res.data; showPicker(); }); } else showPicker(); }
     function showPicker() { const list = document.getElementById('propPickerList'); list.innerHTML = allHouses.map(p => `<div class="prop-item" onclick="selectProperty('${p.id}')"><img src="${p.img}"><b>${p.id}</b></div>`).join(''); document.getElementById('propPickerModal').style.display = 'block'; }
     function selectProperty(id) { document.getElementById(currentTarget + 'Id').value = id; document.getElementById(currentTarget + 'Text').innerText = id; closePropPicker(); }
     function closePropPicker() { document.getElementById('propPickerModal').style.display = 'none'; }
-    function showVisitPage() { switchPage('propertiesPage'); }
+    function showVisitPage() { switchPage('visitPage'); }
     function handleLogout() { localStorage.clear(); location.reload(); }
   </script>
 </body>
