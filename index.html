@@ -3,90 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HUA HIN PROPERTIES - Login</title>
+    <title>HUA HIN PROPERTIES - Unified Portal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #121212; color: #fff; font-family: 'Kanit', sans-serif; height: 100vh; }
-        .login-container { max-width: 400px; margin: 100px auto; padding: 30px; background: #1e1e1e; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid #333; }
-        .property-card { background: #1a1a1a; border-radius: 15px; overflow: hidden; margin-bottom: 20px; border: 1px solid #333; }
+        body { background-color: #0b0b0b; color: #e0e0e0; font-family: 'Kanit', sans-serif; min-height: 100vh; }
+        .login-card { max-width: 400px; margin: 80px auto; padding: 40px; background: #181818; border-radius: 30px; border: 1px solid #333; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+        .property-card { background: #181818; border-radius: 20px; border: 1px solid #2a2a2a; overflow: hidden; transition: 0.3s; margin-bottom: 25px; }
+        .property-card:hover { transform: translateY(-8px); border-color: #ffc107; }
         .property-img { height: 200px; object-fit: cover; width: 100%; border-bottom: 3px solid #ffc107; }
-        .price { color: #ffc107; font-size: 1.3rem; font-weight: bold; }
-        #mainContent { display: none; } /* ซ่อนเนื้อหาไว้จนกว่าจะล็อกอิน */
-        .admin-badge { background: #ffc107; color: #000; padding: 2px 10px; border-radius: 10px; font-size: 0.8rem; font-weight: bold; }
+        .price-tag { color: #ffc107; font-weight: 600; font-size: 1.25rem; }
+        #mainContent { display: none; }
+        .admin-status { font-size: 0.75rem; background: #ffc107; color: #000; padding: 3px 12px; border-radius: 20px; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div id="loginPage" class="container">
-        <div class="login-container text-center">
-            <img src="https://cdn-icons-png.flaticon.com/512/607/607614.png" width="80" class="mb-3">
-            <h3 class="mb-4">Agent Login</h3>
-            <input type="email" id="emailInput" class="form-control mb-3" placeholder="ระบุอีเมลของคุณ" required>
-            <button class="btn btn-warning w-100 fw-bold" onclick="handleLogin()">เข้าสู่ระบบ</button>
-            <p class="mt-3 text-secondary small">ระบบตรวจพบสิทธิ์แอดมินอัตโนมัติจากอีเมล</p>
+        <div class="login-card text-center">
+            <div class="mb-4">
+                <img src="https://cdn-icons-png.flaticon.com/512/607/607614.png" width="80">
+            </div>
+            <h3 class="mb-1 fw-bold">Login System</h3>
+            <p class="text-secondary mb-4 small">กรุณาระบุข้อมูลเพื่อเข้าสู่ฐานข้อมูลทรัพย์</p>
+            
+            <div class="text-start mb-3">
+                <label class="form-label small text-secondary">เบอร์โทรศัพท์</label>
+                <input type="tel" id="phoneInput" class="form-control form-control-lg bg-dark text-white border-secondary" placeholder="08XXXXXXXX">
+            </div>
+            
+            <div class="text-start mb-4">
+                <label class="form-label small text-secondary">รหัสผ่าน</label>
+                <input type="password" id="passInput" class="form-control form-control-lg bg-dark text-white border-secondary" placeholder="••••••••">
+            </div>
+            
+            <button class="btn btn-warning btn-lg w-100 fw-bold py-3 shadow" onclick="attemptLogin()">เข้าสู่ระบบ</button>
         </div>
     </div>
 
-    <div id="mainContent" class="container py-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4>รายการอสังหาริมทรัพย์ <span id="adminTag"></span></h4>
-            <button class="btn btn-outline-light btn-sm" onclick="location.reload()">ออกจากระบบ</button>
+    <div id="mainContent" class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-5 border-bottom pb-3 border-secondary">
+            <h2 class="fw-bold"><span class="text-warning">HH</span> PROPERTIES <span id="adminIndicator"></span></h2>
+            <button class="btn btn-outline-danger btn-sm rounded-pill px-4" onclick="location.reload()">ออกจากระบบ</button>
         </div>
-        <div id="propertyList" class="row">กำลังดึงข้อมูลล่าสุด...</div>
+        <div id="listContainer" class="row">
+            <div class="text-center p-5">
+                <div class="spinner-border text-warning" role="status"></div>
+                <p class="mt-3">กำลังเชื่อมต่อฐานข้อมูล...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="detailModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content bg-dark text-white border-secondary">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="modalTitle">รายละเอียดทรัพย์สิน</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div id="modalBody" class="modal-body p-4"></div>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // *** 1. วาง URL เว็บแอปของคุณที่นี่ ***
+        // *** ตั้งค่าลิงก์และรหัสแอดมินที่คุณเจษฎ์ระบุ ***
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwSuBmFRK8OKfsBPt_XEeAYHPg2uW_qc1cwh2lIR5yUQB6q5r1VyNnhUqieH_BKRH08qA/exec"; 
-        
-        // *** 2. ระบุอีเมลแอดมินของคุณ ***
-        const ADMIN_EMAIL = "doothailand@gmail.com"; 
+        const ADMIN_PHONE = "0805820777"; 
+        const ADMIN_PASS = "admin12345"; 
 
-        let userEmail = "";
+        let userPhone = "";
+        let userPass = "";
+        let propertyData = [];
 
-        async function handleLogin() {
-            userEmail = document.getElementById('emailInput').value.toLowerCase().trim();
-            if (!userEmail) { alert("กรุณากรอกอีเมล"); return; }
+        // ฟังก์ชันเข้าสู่ระบบ
+        async function attemptLogin() {
+            userPhone = document.getElementById('phoneInput').value.trim();
+            userPass = document.getElementById('passInput').value.trim();
+
+            if (!userPhone || !userPass) { alert("กรุณากรอกข้อมูลให้ครบถ้วน"); return; }
 
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('mainContent').style.display = 'block';
-            
-            if (userEmail === ADMIN_EMAIL.toLowerCase()) {
-                document.getElementById('adminTag').innerHTML = '<span class="admin-badge">ADMIN MODE</span>';
+
+            // ถ้าเบอร์และรหัสผ่านตรงกับแอดมิน
+            if (userPhone === ADMIN_PHONE && userPass === ADMIN_PASS) {
+                document.getElementById('adminIndicator').innerHTML = '<span class="admin-status ms-2">ADMIN MODE</span>';
             }
-            loadProperties();
+            
+            fetchDatabase();
         }
 
-        async function loadProperties() {
+        // ดึงข้อมูลจาก Google Sheets ผ่าน Web App
+        async function fetchDatabase() {
             try {
                 const response = await fetch(WEB_APP_URL + "?action=read");
-                const data = await response.json();
-                let html = '';
-                data.forEach(item => {
-                    const isAdmin = (userEmail === ADMIN_EMAIL.toLowerCase());
-                    html += `
-                        <div class="col-md-4">
-                            <div class="property-card shadow">
-                                <img src="${item.image_url}" class="property-img" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
-                                <div class="p-3">
-                                    <h5 class="text-info">${item.property_id}</h5>
-                                    <p class="mb-1">${item.project_name || '-'}</p>
-                                    <p class="price">ราคา: ${item.price || '-'}</p>
-                                    <hr style="border-color:#333">
-                                    <div class="d-grid gap-2">
-                                        <button class="btn btn-sm btn-outline-info">ดูรายละเอียด</button>
-                                        ${isAdmin ? `<a href="${WEB_APP_URL}" target="_blank" class="btn btn-sm btn-warning fw-bold">แก้ไขข้อมูล (ทุกคอลัมน์)</a>` : ''}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>`;
-                });
-                document.getElementById('propertyList').innerHTML = html;
-            } catch (e) {
-                document.getElementById('propertyList').innerHTML = '<div class="alert alert-danger">เชื่อมต่อข้อมูลไม่สำเร็จ</div>';
+                propertyData = await response.json();
+                renderCards();
+            } catch (err) {
+                document.getElementById('listContainer').innerHTML = '<div class="alert alert-danger">ไม่สามารถโหลดข้อมูลได้ โปรดตรวจสอบการเชื่อมต่อ</div>';
             }
+        }
+
+        // แสดงผลการ์ดทรัพย์สิน
+        function renderCards() {
+            let html = '';
+            const isAdmin = (userPhone === ADMIN_PHONE && userPass === ADMIN_PASS); //
+
+            propertyData.forEach((item, index) => {
+                html += `
+                <div class="col-md-6 col-lg-4">
+                    <div class="property-card shadow-lg">
+                        <img src="${item.image_url}" class="property-img" onerror="this.src='https://via.placeholder.com/500x350?text=Hua+Hin+Property'">
+                        <div class="p-4">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h5 class="fw-bold text-info mb-0">${item.property_id}</h5>
+                                <span class="badge bg-dark border border-secondary text-secondary">${item.status || 'Active'}</span>
+                            </div>
+                            <p class="mb-3 text-secondary small text-truncate">${item.project_name || 'ไม่ระบุโครงการ'}</p>
+                            <div class="price-tag mb-4">฿ ${item.price || 'สอบถามเพิ่มเติม'}</div>
+                            
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-light rounded-pill py-2" onclick="openDetail(${index})">ดูรายละเอียด</button>
+                                ${isAdmin ? `<a href="${WEB_APP_URL}" target="_blank" class="btn btn-warning fw-bold rounded-pill py-2">จัดการ (แก้ไขทุกคอลัมน์)</a>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('listContainer').innerHTML = html;
+        }
+
+        // เปิดป๊อปอัพแสดงข้อมูลครบทุกช่อง (สำหรับ Agent)
+        function openDetail(index) {
+            const item = propertyData[index];
+            document.getElementById('modalTitle').innerText = "ข้อมูลบ้านรหัส: " + item.property_id;
+            let detailHtml = '<div class="row g-3">';
+            for (let key in item) {
+                if(key !== "image_url") {
+                    detailHtml += `<div class="col-6 border-bottom border-secondary pb-2">
+                                    <span class="text-secondary small d-block">${key}</span>
+                                    <span class="fw-bold">${item[key] || '-'}</span>
+                                   </div>`;
+                }
+            }
+            detailHtml += '</div>';
+            document.getElementById('modalBody').innerHTML = detailHtml;
+            new bootstrap.Modal(document.getElementById('detailModal')).show();
         }
     </script>
 </body>
